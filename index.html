@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gráfico interactivo — ShawnFRS</title>
+  <meta name="description" content="Visualización interactiva creada por ShawnFRS. Abre el gráfico interactivo integrado en una página profesional y responsiva." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-grid">
+      <div>
+        <h1 class="site-title">Gráfico interactivo</h1>
+        <p class="site-subtitle">Visualización interactiva diseñada por ShawnFRS</p>
+      </div>
+      <nav class="header-actions" aria-label="Acciones">
+        <a class="btn ghost" href="https://github.com/ShawnFRS/ShawnFRS.github.io/blob/main/grafico_interactivo.html" target="_blank" rel="noopener">Ver código fuente</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container main-content">
+    <section class="panel">
+      <h2 class="panel-title">Explora el gráfico</h2>
+      <p class="panel-desc">El gráfico interactivo se muestra abajo. Puedes interactuar con él como lo haces en el archivo original.</p>
+
+      <div class="iframe-wrap" role="region" aria-label="Gráfico interactivo">
+        <iframe
+          src="grafico_interactivo.html"
+          title="Gráfico interactivo de ShawnFRS"
+          loading="lazy"
+          class="chart-frame"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </section>
+
+    <section class="panel small">
+      <h3>Notas</h3>
+      <ul>
+        <li>Si el gráfico tarda en cargar, abre el archivo directamente: grafico_interactivo.html</li>
+        <li>El diseño es responsivo y se adapta a pantallas móviles.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>© 2025 ShawnFRS</div>
+      <div><a href="https://github.com/ShawnFRS/ShawnFRS.github.io" target="_blank" rel="noopener">Repositorio</a></div>
+    </div>
+  </footer>
+
+  <script>
+    // Toggle de tema ligero/oscuro simple y persistente
+    (function () {
+      const root = document.documentElement;
+      const key = 'shawn_theme';
+      const saved = localStorage.getItem(key);
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      root.setAttribute('data-theme', saved || (prefersDark ? 'dark' : 'light'));
+
+      // botón flotante
+      const btn = document.createElement('button');
+      btn.className = 'theme-toggle';
+      btn.title = 'Cambiar tema';
+      btn.innerText = '🌓';
+      document.body.appendChild(btn);
+
+      btn.addEventListener('click', () => {
+        const current = root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+        const next = current === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        localStorage.setItem(key, next);
+      });
+    })();
+  </script>
+</body>
+</html>
