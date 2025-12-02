@@ -1,5 +1,5 @@
 body {
-    background: #0e0e10;
+    background: #0f0f12;
     color: white;
     margin: 0;
     font-family: "Segoe UI", sans-serif;
@@ -14,19 +14,19 @@ body {
 .title {
     text-align: center;
     font-size: 32px;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 }
 
 .cards {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 25px;
+    margin-bottom: 35px;
 }
 
 .card {
     flex: 1;
     margin: 0 12px;
-    padding: 20px;
+    padding: 22px;
     background: #18181b;
     border-radius: 14px;
     text-align: center;
@@ -35,56 +35,56 @@ body {
 }
 
 .card:hover {
-    transform: translateY(-5px);
-    background: #1e1e22;
+    transform: translateY(-6px);
+    background: #1f1f24;
     box-shadow: 0 0 18px rgba(255,255,255,0.10);
-    cursor: pointer;
 }
 
 .card h2 {
-    margin-top: 0;
+    margin-bottom: 5px;
     font-size: 20px;
 }
 
 .card p {
-    font-size: 28px;
+    margin-top: 10px;
+    font-size: 30px;
+    color: #4fc3f7;
     font-weight: bold;
-    margin-top: 8px;
-    color: #40c4ff;
 }
 
 .subtitle {
     margin-top: 40px;
-    margin-bottom: 12px;
     font-size: 24px;
 }
 
 .inventory-table {
     width: 100%;
+    margin-top: 10px;
     border-collapse: collapse;
     background: #18181b;
+    border-radius: 10px;
     overflow: hidden;
-    border-radius: 12px;
+}
+
+.inventory-table th,
+.inventory-table td {
+    padding: 14px;
+    text-align: center;
 }
 
 .inventory-table thead {
     background: #232327;
 }
 
-.inventory-table th, 
-.inventory-table td {
-    padding: 14px;
-    text-align: center;
-}
-
-.inventory-table tr {
+.inventory-table tbody tr {
     transition: 0.25s;
 }
 
 .inventory-table tbody tr:hover {
-    background: #2d2d32;
+    background: #2c2c31;
     transform: scale(1.01);
 }
+
 
 
 
