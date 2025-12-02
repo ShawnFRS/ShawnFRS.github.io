@@ -1,106 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard Profesional</title>
-    <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <title>Forecast Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
 
-    <!-- Barra lateral -->
-    <aside class="sidebar">
-        <h2 class="logo">Mi Dashboard</h2>
-        <nav>
-            <a class="active">Inicio</a>
-            <a>Pedidos</a>
-            <a>Inventario</a>
-            <a>Reportes</a>
-            <a>Configuraciones</a>
-        </nav>
-    </aside>
+<header>
+    <div class="logo">katana</div>
+</header>
 
-    <!-- Contenido principal -->
-    <main class="main">
-        <header class="header">
-            <h1>Panel de Control</h1>
-        </header>
+<div class="container">
+    
+    <div class="title">
+        <span class="path">T-shirt / black</span>
+        <h1>Forecast</h1>
+    </div>
 
-        <!-- Tarjetas -->
-        <section class="cards">
-            <div class="card">
-                <h3>Pedidos del Día</h3>
-                <p class="value">128</p>
-            </div>
+    <div class="chart-card">
+        <canvas id="forecastChart"></canvas>
+    </div>
 
-            <div class="card">
-                <h3>Entregados</h3>
-                <p class="value green">94</p>
-            </div>
+    <table class="forecast-table">
+        <thead>
+            <tr>
+                <th>Week</th>
+                <th>Expected</th>
+                <th>Committed</th>
+                <th>In stock</th>
+                <th>Suggested</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Present week</td>
+                <td>120</td>
+                <td>80</td>
+                <td><span class="badge red">Low</span></td>
+                <td>100</td>
+            </tr>
+            <tr>
+                <td>Week 2</td>
+                <td>90</td>
+                <td>30</td>
+                <td><span class="badge yellow">Medium</span></td>
+                <td>60</td>
+            </tr>
+            <tr>
+                <td>Week 3</td>
+                <td>60</td>
+                <td>20</td>
+                <td><span class="badge green">OK</span></td>
+                <td>40</td>
+            </tr>
+        </tbody>
+    </table>
 
-            <div class="card">
-                <h3>Atrasados</h3>
-                <p class="value red">12</p>
-            </div>
+</div>
 
-            <div class="card">
-                <h3>Fallidos</h3>
-                <p class="value orange">6</p>
-            </div>
-        </section>
-
-        <!-- Tabla -->
-        <section class="table-section">
-            <h2>Órdenes Recientes</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID Pedido</th>
-                        <th>Cliente</th>
-                        <th>Fecha</th>
-                        <th>Estado</th>
-                        <th>Monto</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>#4021</td>
-                        <td>Constructora Andes</td>
-                        <td>02-12-2025</td>
-                        <td><span class="badge green">Entregado</span></td>
-                        <td>$540.000</td>
-                    </tr>
-
-                    <tr>
-                        <td>#4018</td>
-                        <td>Estructuras del Sur</td>
-                        <td>02-12-2025</td>
-                        <td><span class="badge red">Atrasado</span></td>
-                        <td>$210.000</td>
-                    </tr>
-
-                    <tr>
-                        <td>#4010</td>
-                        <td>Maestranza Lira</td>
-                        <td>01-12-2025</td>
-                        <td><span class="badge orange">Fallido</span></td>
-                        <td>$120.000</td>
-                    </tr>
-
-                    <tr>
-                        <td>#4001</td>
-                        <td>Ferretería Sigma</td>
-                        <td>01-12-2025</td>
-                        <td><span class="badge green">Entregado</span></td>
-                        <td>$89.000</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
-    </main>
+<script src="chart.js"></script>
 
 </body>
 </html>
+
 
 
