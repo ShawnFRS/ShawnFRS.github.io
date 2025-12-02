@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard Inventario</title>
+    <title>Panel de Inventario</title>
+
     <link rel="stylesheet" href="styles.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -11,6 +12,7 @@
 <body>
 
     <div class="container">
+
         <h1 class="title">Panel de Inventario</h1>
 
         <div class="cards">
@@ -18,10 +20,12 @@
                 <h2>En stock</h2>
                 <p id="stock">–</p>
             </div>
+
             <div class="card">
                 <h2>Comprometido</h2>
                 <p id="committed">–</p>
             </div>
+
             <div class="card">
                 <h2>Esperado</h2>
                 <p id="expected">–</p>
@@ -32,7 +36,7 @@
 
         <canvas id="demandChart"></canvas>
 
-        <h2 class="subtitle">Tabla de Inventario</h2>
+        <h2 class="subtitle">Inventario por Producto</h2>
 
         <table class="inventory-table">
             <thead>
@@ -48,13 +52,6 @@
 
     </div>
 
-    <script src="chart.js"></script>
-
+    <script src="app.js"></script>
 </body>
 </html>
-
-
-
-
-
-
