@@ -2,32 +2,66 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard de Pedidos</title>
-<link rel="stylesheet" href="style.css">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <h1>📊 Dashboard de Pedidos</h1>
-  <div id="alertas"></div>
-  <table id="tablaPedidos">
-    <thead>
-      <tr>
-        <th>Pieza</th>
-        <th>Stock</th>
-        <th>Stock Mínimo</th>
-        <th>Cantidad a Pedir</th>
-        <th>Proveedor</th>
-        <th>Email</th>
-        <th>Deadline</th>
-        <th>Status</th>
-        <th>Acción</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+<body class="bg-gray-100 font-sans">
 
-  <canvas id="chartStock" width="600" height="300"></canvas>
+<header class="bg-blue-700 text-white p-4 shadow-md">
+  <h1 class="text-2xl font-bold">📊 Dashboard de Pedidos de Piezas de Auto</h1>
+</header>
 
-  <script src="app.js"></script>
+<main class="p-6">
+  <!-- KPIs -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+    <div id="kpi-urgentes" class="bg-yellow-300 p-4 rounded shadow text-center">
+      <h2 class="font-bold text-lg">Pedidos Urgentes</h2>
+      <p class="text-2xl mt-2" id="num-urgentes">0</p>
+    </div>
+    <div id="kpi-stock" class="bg-red-300 p-4 rounded shadow text-center">
+      <h2 class="font-bold text-lg">Stock Crítico</h2>
+      <p class="text-2xl mt-2" id="num-critico">0</p>
+    </div>
+    <div id="kpi-proveedores" class="bg-green-300 p-4 rounded shadow text-center">
+      <h2 class="font-bold text-lg">Proveedores Confiables</h2>
+      <p class="text-2xl mt-2" id="num-confiables">0</p>
+    </div>
+  </div>
+
+  <!-- Tabla de Pedidos -->
+  <div class="overflow-x-auto mb-6">
+    <table id="tablaPedidos" class="min-w-full bg-white rounded shadow">
+      <thead class="bg-blue-600 text-white">
+        <tr>
+          <th class="px-4 py-2">Pieza</th>
+          <th class="px-4 py-2">Stock</th>
+          <th class="px-4 py-2">Stock Mínimo</th>
+          <th class="px-4 py-2">Cantidad a Pedir</th>
+          <th class="px-4 py-2">Proveedor</th>
+          <th class="px-4 py-2">Email</th>
+          <th class="px-4 py-2">Deadline</th>
+          <th class="px-4 py-2">Status</th>
+          <th class="px-4 py-2">Acción</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- Gráficos -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <canvas id="chartStock" class="bg-white p-4 rounded shadow"></canvas>
+    <canvas id="chartStatus" class="bg-white p-4 rounded shadow"></canvas>
+  </div>
+
+</main>
+
+<script src="app.js"></script>
 </body>
 </html>
+
