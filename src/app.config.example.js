@@ -1,0 +1,1 @@
+export default {\n  CLIENT_ID: '', // coloca tu CLIENT_ID\n  API_KEY: ''    // coloca tu API_KEY\n}

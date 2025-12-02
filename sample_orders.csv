@@ -1,0 +1,1 @@
+Fecha,Proveedor,Item,Cantidad,Estado\n2025-11-01,ACME S.A.,Tornillos,100,delivered\n2025-11-05,Proveedor X,Tuerca,50,failed\n2025-11-10,ACME S.A.,Arandela,200,pending\n2025-12-01,Proveedor Y,Perno,300,pending

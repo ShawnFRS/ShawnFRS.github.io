@@ -1,2 +1,1 @@
-# ShawnFRS.github.io
-probanding
+# Dashboard de Pedidos — feature/dashboard-google-sheets\n\nEsta rama agrega un SPA (React + Vite) con dashboards y conexión a Google Sheets.\n\nPasos rápidos:\n1. Clona la rama feature/dashboard-google-sheets\n2. npm install\n3. Copia `src/app.config.example.js` a `src/app.config.js` y añade CLIENT_ID y API_KEY\n4. npm run dev\n5. Importa `sample_orders.csv` a Google Sheets (hoja llamada `Orders`) o crea tu propia hoja y pega su ID en la app\n\nLimitaciones:\n- El append (escritura) a Google Sheets requiere un flujo OAuth; el helper contiene un TODO. Para pruebas de lectura, publica la hoja como pública y la app leerá los valores.
