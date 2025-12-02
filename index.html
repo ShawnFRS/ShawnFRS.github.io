@@ -2,45 +2,67 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard de Demanda</title>
+    <title>Forecast Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
 
-    <div class="container">
+<header>
+    <div class="logo">katana</div>
+</header>
 
-        <h1>Dashboard de Demanda</h1>
-
-        <div class="cards">
-            <div class="card">Demanda Total: <span id="totalDemanda">0</span></div>
-            <div class="card">Promedio por Pedido: <span id="promedioPedido">0</span></div>
-            <div class="card">Pedidos Activos: <span id="pedidosActivos">0</span></div>
-        </div>
-
-        <!-- GRÁFICO -->
-        <div class="chart-container">
-            <canvas id="forecastChart"></canvas>
-        </div>
-
-        <!-- TABLA -->
-        <table id="tablaPedidos">
-            <thead>
-                <tr>
-                    <th>ID Pedido</th>
-                    <th>Cliente</th>
-                    <th>Fecha</th>
-                    <th>Estado</th>
-                    <th>Cantidad</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-
+<div class="container">
+    
+    <div class="title">
+        <span class="path">T-shirt / black</span>
+        <h1>Forecast</h1>
     </div>
 
-    <script src="chart.js"></script>
+    <div class="chart-card">
+        <canvas id="forecastChart"></canvas>
+    </div>
+
+    <table class="forecast-table">
+        <thead>
+            <tr>
+                <th>Week</th>
+                <th>Expected</th>
+                <th>Committed</th>
+                <th>In stock</th>
+                <th>Suggested</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Present week</td>
+                <td>120</td>
+                <td>80</td>
+                <td><span class="badge red">Low</span></td>
+                <td>100</td>
+            </tr>
+            <tr>
+                <td>Week 2</td>
+                <td>90</td>
+                <td>30</td>
+                <td><span class="badge yellow">Medium</span></td>
+                <td>60</td>
+            </tr>
+            <tr>
+                <td>Week 3</td>
+                <td>60</td>
+                <td>20</td>
+                <td><span class="badge green">OK</span></td>
+                <td>40</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<script src="chart.js"></script>
+
 </body>
 </html>
-
-
