@@ -82,6 +82,16 @@ tbody tr:last-child td {
     background: #43c16f;
 }
 
+.card, table, th, td {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover, table:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(255, 81, 0, 0.4);
+}
+
+
 
 
 
