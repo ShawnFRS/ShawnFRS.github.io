@@ -1,128 +1,106 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Inventario</title>
-
-    <!-- CSS -->
-    <link rel="stylesheet" href="styles.css">
-
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Profesional</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
 
-    <div class="container">
+    <!-- Barra lateral -->
+    <aside class="sidebar">
+        <h2 class="logo">Mi Dashboard</h2>
+        <nav>
+            <a class="active">Inicio</a>
+            <a>Pedidos</a>
+            <a>Inventario</a>
+            <a>Reportes</a>
+            <a>Configuraciones</a>
+        </nav>
+    </aside>
 
-        <h1>Dashboard de Inventario</h1>
+    <!-- Contenido principal -->
+    <main class="main">
+        <header class="header">
+            <h1>Panel de Control</h1>
+        </header>
 
-        <!-- ======== TARJETAS SUPERIORES ========= -->
-        <div class="cards">
+        <!-- Tarjetas -->
+        <section class="cards">
             <div class="card">
-                <h2>En Stock</h2>
-                <p id="inStock">1200</p>
+                <h3>Pedidos del Día</h3>
+                <p class="value">128</p>
             </div>
+
             <div class="card">
-                <h2>Comprometido</h2>
-                <p id="committed">450</p>
+                <h3>Entregados</h3>
+                <p class="value green">94</p>
             </div>
+
             <div class="card">
-                <h2>Disponible</h2>
-                <p id="available">750</p>
+                <h3>Atrasados</h3>
+                <p class="value red">12</p>
             </div>
-        </div>
 
-        <!-- =============== GRÁFICO =============== -->
-        <div class="chart-container">
-            <canvas id="forecastChart"></canvas>
-        </div>
+            <div class="card">
+                <h3>Fallidos</h3>
+                <p class="value orange">6</p>
+            </div>
+        </section>
 
-        <!-- =============== TABLA =============== -->
-        <table id="tablaPedidos">
-            <thead>
-                <tr>
-                    <th>Producto</th>
-                    <th>Stock</th>
-                    <th>Comprometido</th>
-                    <th>Estado</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Datos de ejemplo -->
-                <tr>
-                    <td>Tornillo 8mm</td>
-                    <td>320</td>
-                    <td>120</td>
-                    <td>Normal</td>
-                </tr>
-                <tr>
-                    <td>Perno M12</td>
-                    <td>540</td>
-                    <td>280</td>
-                    <td>Bajo</td>
-                </tr>
-                <tr>
-                    <td>Arandela 6mm</td>
-                    <td>340</td>
-                    <td>50</td>
-                    <td>Normal</td>
-                </tr>
-            </tbody>
-        </table>
+        <!-- Tabla -->
+        <section class="table-section">
+            <h2>Órdenes Recientes</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID Pedido</th>
+                        <th>Cliente</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                        <th>Monto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#4021</td>
+                        <td>Constructora Andes</td>
+                        <td>02-12-2025</td>
+                        <td><span class="badge green">Entregado</span></td>
+                        <td>$540.000</td>
+                    </tr>
 
-    </div>
+                    <tr>
+                        <td>#4018</td>
+                        <td>Estructuras del Sur</td>
+                        <td>02-12-2025</td>
+                        <td><span class="badge red">Atrasado</span></td>
+                        <td>$210.000</td>
+                    </tr>
 
-    <!-- ============= SCRIPT ============= -->
-    <script>
-        // ==========================
-        // Gráfico Forecast + Real
-        // ==========================
+                    <tr>
+                        <td>#4010</td>
+                        <td>Maestranza Lira</td>
+                        <td>01-12-2025</td>
+                        <td><span class="badge orange">Fallido</span></td>
+                        <td>$120.000</td>
+                    </tr>
 
-        const ctx = document.getElementById("forecastChart").getContext("2d");
+                    <tr>
+                        <td>#4001</td>
+                        <td>Ferretería Sigma</td>
+                        <td>01-12-2025</td>
+                        <td><span class="badge green">Entregado</span></td>
+                        <td>$89.000</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
 
-        new Chart(ctx, {
-            type: "line",
-            data: {
-                labels: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul"],
-                datasets: [
-                    {
-                        label: "Forecast",
-                        data: [100, 120, 140, 160, 200, 220, 250],
-                        borderWidth: 3
-                    },
-                    {
-                        label: "Demanda real",
-                        data: [90, 130, 150, 155, 210, 230, 270],
-                        borderWidth: 3
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
+    </main>
 
-                scales: {
-                    y: {
-                        ticks: { color: "#eee" },
-                        grid: { color: "#333" }
-                    },
-                    x: {
-                        ticks: { color: "#eee" },
-                        grid: { color: "#333" }
-                    }
-                },
-
-                plugins: {
-                    legend: {
-                        labels: { color: "#fff" }
-                    }
-                }
-            }
-        });
-
-    </script>
 </body>
 </html>
+
 
