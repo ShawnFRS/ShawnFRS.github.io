@@ -1,4 +1,4 @@
-const SHEET_URL = "TU_WEB_APP_URL_AQUI"; // pon tu URL de Apps Script
+const SHEET_URL = "https://script.google.com/u/0/home/projects/1wVNkVq5iRmboGi8x5o5LQVRUXOVnosHLVUQSbeeawrSpt8EDR4CiFBef/edit"; // pon tu URL de Apps Script
 
 async function cargarDatos() {
   const res = await fetch(SHEET_URL);
