@@ -1,4 +1,4 @@
-const SHEET_URL = "https://script.google.com/u/0/home/projects/1wVNkVq5iRmboGi8x5o5LQVRUXOVnosHLVUQSbeeawrSpt8EDR4CiFBef/edit"; // pon tu URL de Apps Script
+const SHEET_URL = "https://script.google.com/u/0/home/projects/1wVNkVq5iRmboGi8x5o5LQVRUXOVnosHLVUQSbeeawrSpt8EDR4CiFBef/edit"; // pega tu Web App URL
 
 async function cargarDatos() {
   const res = await fetch(SHEET_URL);
@@ -6,36 +6,46 @@ async function cargarDatos() {
   const tbody = document.querySelector("#tablaPedidos tbody");
   tbody.innerHTML = "";
 
-  let stockLabels = [], stockData = [], stockMinData = [], urgentes = 0;
+  let stockLabels = [], stockData = [], stockMinData = [], statusCount = {Urgente:0, Enviado:0, Retrasado:0};
+  let stockCritico = 0;
 
   data.slice(1).forEach(row => {
     const [pieza, stock, stockMin, cantidadPedir, proveedor, email, deadline, status] = row;
     const tr = document.createElement("tr");
 
+    let statusClass = status.includes('Enviado') ? 'status-enviado' :
+                      status.includes('Urgente') ? 'status-urgente' : 'status-retrasado';
+
+    if(status.includes('Urgente')) statusCount.Urgente++;
+    if(status.includes('Enviado')) statusCount.Enviado++;
+    if(stock < stockMin) stockCritico++;
+
     tr.innerHTML = `
-      <td>${pieza}</td>
-      <td>${stock}</td>
-      <td>${stockMin}</td>
-      <td>${cantidadPedir}</td>
-      <td>${proveedor}</td>
-      <td>${email}</td>
-      <td>${new Date(deadline).toLocaleDateString()}</td>
-      <td class="${status.includes('Enviado') ? 'status-enviado' : status.includes('Urgente') ? 'status-urgente' : 'status-retrasado'}">${status}</td>
-      <td><button onclick="enviarPedido('${pieza}')">Enviar Pedido</button></td>
+      <td class="px-2 py-1">${pieza}</td>
+      <td class="px-2 py-1">${stock}</td>
+      <td class="px-2 py-1">${stockMin}</td>
+      <td class="px-2 py-1">${cantidadPedir}</td>
+      <td class="px-2 py-1">${proveedor}</td>
+      <td class="px-2 py-1">${email}</td>
+      <td class="px-2 py-1">${new Date(deadline).toLocaleDateString()}</td>
+      <td class="px-2 py-1 ${statusClass}">${status}</td>
+      <td class="px-2 py-1"><button onclick="enviarPedido('${pieza}')">Enviar</button></td>
     `;
     tbody.appendChild(tr);
 
     stockLabels.push(pieza);
     stockData.push(stock);
     stockMinData.push(stockMin);
-    if(status.includes('Urgente')) urgentes++;
   });
 
-  document.getElementById("alertas").innerText = `⚠️ Pedidos urgentes: ${urgentes}`;
+  // KPIs
+  document.getElementById("num-urgentes").innerText = statusCount.Urgente;
+  document.getElementById("num-critico").innerText = stockCritico;
+  document.getElementById("num-confiables").innerText = statusCount.Enviado;
 
-  // Gráfico de stock
-  const ctx = document.getElementById('chartStock').getContext('2d');
-  new Chart(ctx, {
+  // Gráfico de Stock
+  const ctxStock = document.getElementById('chartStock').getContext('2d');
+  new Chart(ctxStock, {
     type: 'bar',
     data: {
       labels: stockLabels,
@@ -44,7 +54,21 @@ async function cargarDatos() {
         {label: 'Stock Mínimo', data: stockMinData, backgroundColor: '#ea9999'}
       ]
     },
-    options: { responsive: true, plugins: { legend: { position: 'top' } } }
+    options: { responsive:true, plugins:{legend:{position:'top'}} }
+  });
+
+  // Gráfico de Status
+  const ctxStatus = document.getElementById('chartStatus').getContext('2d');
+  new Chart(ctxStatus, {
+    type: 'pie',
+    data: {
+      labels: ['Enviado','Urgente','Retrasado'],
+      datasets:[{
+        data: [statusCount.Enviado, statusCount.Urgente, statusCount.Retrasado],
+        backgroundColor: ['#b6d7a8','#ffe599','#ea9999']
+      }]
+    },
+    options:{ responsive:true }
   });
 }
 
@@ -52,14 +76,15 @@ async function enviarPedido(pieza) {
   const cantidad = prompt(`Ingrese cantidad a pedir para ${pieza}:`);
   if(!cantidad) return;
 
-  const res = await fetch(SHEET_URL, {
+  await fetch(SHEET_URL, {
     method: 'POST',
-    body: JSON.stringify({pieza, cantidad}),
+    body: JSON.stringify({pieza, cantidad})
   });
-  await res.json();
+
   alert(`✅ Pedido enviado para ${pieza}`);
-  cargarDatos(); // recarga tabla y gráfico
+  cargarDatos();
 }
 
 // Cargar datos al inicio
 cargarDatos();
+
