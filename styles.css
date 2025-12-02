@@ -1,99 +1,137 @@
+/* ============================================= */
+/* ============   ESTILO GENERAL   ============= */
+/* ============================================= */
+
 body {
     margin: 0;
-    background: #f6f9fa;
-    font-family: 'Inter', sans-serif;
-}
-
-header {
-    background: #072c3f;
-    padding: 18px;
-}
-
-.logo {
-    color: white;
-    font-weight: bold;
-    font-size: 24px;
+    background: #0f0f0f;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #ffffff;
 }
 
 .container {
-    padding: 40px;
-}
-
-.path {
-    font-size: 14px;
-    color: #777;
+    width: 95%;
+    max-width: 1200px;
+    margin: auto;
+    padding-top: 20px;
 }
 
 h1 {
-    margin: 5px 0 20px;
+    text-align: center;
+    margin-bottom: 25px;
+    color: #ff6b00;
     font-size: 32px;
+    letter-spacing: 1px;
 }
 
-.chart-card {
-    background: white;
-    padding: 20px;
-    border-radius: 14px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-    margin-bottom: 40px;
+/* ============================================= */
+/* ===============     CARDS     =============== */
+/* ============================================= */
+
+.cards {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
 }
+
+.card {
+    background: #1a1a1a;
+    padding: 20px;
+    flex: 1;
+    margin: 0 10px;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 18px;
+    border: 1px solid #292929;
+
+    /* Animaciones */
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(255, 94, 0, 0.4);
+}
+
+/* ============================================= */
+/* =============    TABLA DE PEDIDOS   ========= */
+/* ============================================= */
 
 table {
     width: 100%;
+    margin-top: 25px;
     border-collapse: collapse;
-    background: white;
+    background-color: #1b1b1b;
     border-radius: 12px;
     overflow: hidden;
-    font-size: 15px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+
+    /* Animación */
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-thead {
-    background: #f1f5f7;
+table:hover {
+    transform: translateY(-4px);
+    box-shadow: 0px 7px 18px rgba(255, 94, 0, 0.35);
+}
+
+th {
+    background: #222222;
+    padding: 12px;
+    color: #ff7800;
     font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-th, td {
-    padding: 16px;
-    text-align: left;
-    border-bottom: 1px solid #e6ebee;
+td {
+    padding: 12px;
+    border-bottom: 1px solid #333;
 }
 
-tbody tr:last-child td {
-    border-bottom: none;
+tr:hover {
+    background: #2a2a2a;
+    cursor: pointer;
 }
 
-.badge {
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-weight: bold;
-    color: white;
+/* ============================================= */
+/* ===============     GRÁFICO     ============= */
+/* ============================================= */
+
+.chart-container {
+    width: 70%;         /* Reducimos el tamaño del gráfico */
+    margin: 0 auto;
+    padding: 20px;
+    background: #181818;
+    border-radius: 12px;
+    border: 1px solid #292929;
+
+    /* Animación */
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.badge.red {
-    background: #f55b5b;
+.chart-container:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 28px rgba(255, 81, 0, 0.4);
 }
 
-.badge.yellow {
-    background: #ffc847;
-    color: #333;
+/* Hacer que los labels sean blancos */
+canvas {
+    filter: brightness(1.1);
 }
 
-.badge.green {
-    background: #43c16f;
+/* ============================================= */
+/* ======= SCROLLBAR PERSONALIZADA (BONUS) ===== */
+/* ============================================= */
+
+::-webkit-scrollbar {
+    width: 10px;
 }
 
-.card, table, th, td {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+::-webkit-scrollbar-thumb {
+    background: #ff6b00;
+    border-radius: 8px;
 }
 
-.card:hover, table:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(255, 81, 0, 0.4);
+::-webkit-scrollbar-track {
+    background: #1a1a1a;
 }
-
-
-
-
-
-
-
