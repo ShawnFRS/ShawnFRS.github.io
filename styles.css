@@ -1,10 +1,22 @@
-body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4;}
-h1 { color: #4a86e8;}
-table { width: 100%; border-collapse: collapse; margin-bottom: 30px;}
-th, td { border: 1px solid #ccc; padding: 8px; text-align: center;}
-th { background-color: #4a86e8; color: white; }
+/* Estilos personalizados */
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
 .status-enviado { background-color: #b6d7a8; }
 .status-urgente { background-color: #ffe599; }
 .status-retrasado { background-color: #ea9999; }
-button { padding: 5px 10px; cursor: pointer; }
-#alertas { font-weight: bold; margin-bottom: 10px;}
+
+button {
+    padding: 4px 8px;
+    border-radius: 4px;
+    background-color: #4a86e8;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #3b6fd1;
+}
+
