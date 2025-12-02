@@ -2,67 +2,127 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Forecast Dashboard</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Inventario</title>
+
+    <!-- CSS -->
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
 
-<header>
-    <div class="logo">Buses Hualpen</div>
-</header>
+    <div class="container">
 
-<div class="container">
-    
-    <div class="title">
-        <span class="path">T-shirt / black</span>
-        <h1>Forecast</h1>
+        <h1>Dashboard de Inventario</h1>
+
+        <!-- ======== TARJETAS SUPERIORES ========= -->
+        <div class="cards">
+            <div class="card">
+                <h2>En Stock</h2>
+                <p id="inStock">1200</p>
+            </div>
+            <div class="card">
+                <h2>Comprometido</h2>
+                <p id="committed">450</p>
+            </div>
+            <div class="card">
+                <h2>Disponible</h2>
+                <p id="available">750</p>
+            </div>
+        </div>
+
+        <!-- =============== GRÁFICO =============== -->
+        <div class="chart-container">
+            <canvas id="forecastChart"></canvas>
+        </div>
+
+        <!-- =============== TABLA =============== -->
+        <table id="tablaPedidos">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Stock</th>
+                    <th>Comprometido</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Datos de ejemplo -->
+                <tr>
+                    <td>Tornillo 8mm</td>
+                    <td>320</td>
+                    <td>120</td>
+                    <td>Normal</td>
+                </tr>
+                <tr>
+                    <td>Perno M12</td>
+                    <td>540</td>
+                    <td>280</td>
+                    <td>Bajo</td>
+                </tr>
+                <tr>
+                    <td>Arandela 6mm</td>
+                    <td>340</td>
+                    <td>50</td>
+                    <td>Normal</td>
+                </tr>
+            </tbody>
+        </table>
+
     </div>
 
-    <div class="chart-card">
-        <canvas id="forecastChart"></canvas>
-    </div>
+    <!-- ============= SCRIPT ============= -->
+    <script>
+        // ==========================
+        // Gráfico Forecast + Real
+        // ==========================
 
-    <table class="forecast-table">
-        <thead>
-            <tr>
-                <th>Semana</th>
-                <th>Esperado</th>
-                <th>Pactado</th>
-                <th>En Bodega</th>
-                <th>Sugerida</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Esta Semana</td>
-                <td>120</td>
-                <td>80</td>
-                <td><span class="badge red">Baja</span></td>
-                <td>100</td>
-            </tr>
-            <tr>
-                <td>Week 2</td>
-                <td>90</td>
-                <td>30</td>
-                <td><span class="badge yellow">Media</span></td>
-                <td>60</td>
-            </tr>
-            <tr>
-                <td>Week 3</td>
-                <td>60</td>
-                <td>20</td>
-                <td><span class="badge green">OK</span></td>
-                <td>40</td>
-            </tr>
-        </tbody>
-    </table>
+        const ctx = document.getElementById("forecastChart").getContext("2d");
 
-</div>
+        new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul"],
+                datasets: [
+                    {
+                        label: "Forecast",
+                        data: [100, 120, 140, 160, 200, 220, 250],
+                        borderWidth: 3
+                    },
+                    {
+                        label: "Demanda real",
+                        data: [90, 130, 150, 155, 210, 230, 270],
+                        borderWidth: 3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
 
-<script src="chart.js"></script>
+                scales: {
+                    y: {
+                        ticks: { color: "#eee" },
+                        grid: { color: "#333" }
+                    },
+                    x: {
+                        ticks: { color: "#eee" },
+                        grid: { color: "#333" }
+                    }
+                },
 
+                plugins: {
+                    legend: {
+                        labels: { color: "#fff" }
+                    }
+                }
+            }
+        });
+
+    </script>
 </body>
 </html>
+
