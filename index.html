@@ -1,67 +1,63 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard de Pedidos</title>
-<!-- Tailwind CSS -->
-<script src="https://cdn.tailwindcss.com"></script>
-<!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forecast Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body class="bg-gray-100 font-sans">
+<body>
 
-<header class="bg-blue-700 text-white p-4 shadow-md">
-  <h1 class="text-2xl font-bold">📊 Dashboard de Pedidos de Piezas de Auto</h1>
-</header>
+    <header>
+        <div class="logo">katana</div>
+    </header>
 
-<main class="p-6">
-  <!-- KPIs -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-    <div id="kpi-urgentes" class="bg-yellow-300 p-4 rounded shadow text-center">
-      <h2 class="font-bold text-lg">Pedidos Urgentes</h2>
-      <p class="text-2xl mt-2" id="num-urgentes">0</p>
-    </div>
-    <div id="kpi-stock" class="bg-red-300 p-4 rounded shadow text-center">
-      <h2 class="font-bold text-lg">Stock Crítico</h2>
-      <p class="text-2xl mt-2" id="num-critico">0</p>
-    </div>
-    <div id="kpi-proveedores" class="bg-green-300 p-4 rounded shadow text-center">
-      <h2 class="font-bold text-lg">Proveedores Confiables</h2>
-      <p class="text-2xl mt-2" id="num-confiables">0</p>
-    </div>
-  </div>
+    <main>
+        <h2>Forecast</h2>
 
-  <!-- Tabla de Pedidos -->
-  <div class="overflow-x-auto mb-6">
-    <table id="tablaPedidos" class="min-w-full bg-white rounded shadow">
-      <thead class="bg-blue-600 text-white">
-        <tr>
-          <th class="px-4 py-2">Pieza</th>
-          <th class="px-4 py-2">Stock</th>
-          <th class="px-4 py-2">Stock Mínimo</th>
-          <th class="px-4 py-2">Cantidad a Pedir</th>
-          <th class="px-4 py-2">Proveedor</th>
-          <th class="px-4 py-2">Email</th>
-          <th class="px-4 py-2">Deadline</th>
-          <th class="px-4 py-2">Status</th>
-          <th class="px-4 py-2">Acción</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
+        <div class="card">
+            <canvas id="forecastChart"></canvas>
+        </div>
 
-  <!-- Gráficos -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-    <canvas id="chartStock" class="bg-white p-4 rounded shadow"></canvas>
-    <canvas id="chartStatus" class="bg-white p-4 rounded shadow"></canvas>
-  </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Week</th>
+                    <th>Expected</th>
+                    <th>Committed</th>
+                    <th>In stock</th>
+                    <th>Suggested</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Present week</td>
+                    <td>120</td>
+                    <td>80</td>
+                    <td class="status red">–20</td>
+                    <td>100</td>
+                </tr>
+                <tr>
+                    <td>Week 2</td>
+                    <td>90</td>
+                    <td>30</td>
+                    <td class="status yellow">10</td>
+                    <td>60</td>
+                </tr>
+                <tr>
+                    <td>Week 3</td>
+                    <td>60</td>
+                    <td>20</td>
+                    <td class="status green">40</td>
+                    <td>40</td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
 
-</main>
-
-<script src="app.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
+
 
