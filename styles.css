@@ -172,3 +172,9 @@ tbody tr:last-child td {
     padding-right: 4px;
     box-sizing: border-box;
 }
+#tortaChart {
+    max-width: 260px;
+    max-height: 260px;
+    margin: 0 auto;
+    display: block;
+}
