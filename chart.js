@@ -2,9 +2,9 @@
    GRÁFICO 1: Forecast vs Real
 ============================================================ */
 
-const semanas = ["W1","W2","W3","W4","W5","W6","W7","W8"];
-const forecastSemanal = [5,10,85,60,45,25,10,22];
-const realSemanal     = [15,9,70,50,30,40,12,24];
+const semanas = ["W1","W2","W3","W4","W5","W6","W7"];
+const forecastSemanal = [5,10,85,60,45,25,10];
+const realSemanal     = [9,12,81,35,56,31,12];
 
 const ctx1 = document.getElementById("forecastChart");
 const chartForecast = new Chart(ctx1, {
@@ -216,7 +216,7 @@ function actualizarPaneles() {
 
     costoText.textContent = `Costo estimado asociado a las desviaciones actuales: ${costoFormato}.`;
 
-    // Ajustar mensajes según gráfico seleccionado (solo texto contextual)
+    // Ajustar mensajes según gráfico seleccionado (sólo contexto)
     const seleccionado = chartSelect.value;
     if (seleccionado === "forecast") {
         alertText.textContent = mensajeAlerta + " (Vista: Forecast vs Real)";
@@ -234,6 +234,84 @@ function actualizarPaneles() {
 
 // Llamar una vez al inicio
 actualizarPaneles();
+
+
+/* ============================================================
+   CARRUSEL DE INSIGHTS: AUTO-SLIDE + MOUSE HORIZONTAL
+============================================================ */
+
+const insightsCard = document.getElementById("insightsCard");
+const insightsInner = document.querySelector(".insights-inner");
+const slides = document.querySelectorAll(".insight-slide");
+
+let currentSlide = 0;
+let autoInterval = null;
+let lastX = null;
+let lastSwitchTime = 0;
+const SWITCH_THRESHOLD_PX = 40;
+const SWITCH_MIN_DELAY = 600; // ms
+let isHover = false;
+
+function goToSlide(index) {
+    const total = slides.length;
+    currentSlide = (index + total) % total;
+    insightsInner.style.transform = `translateX(-${currentSlide * 100}%)`;
+}
+
+function startAutoSlide() {
+    if (autoInterval) clearInterval(autoInterval);
+    autoInterval = setInterval(() => {
+        goToSlide(currentSlide + 1);
+    }, 6000);
+}
+
+function stopAutoSlide() {
+    if (autoInterval) {
+        clearInterval(autoInterval);
+        autoInterval = null;
+    }
+}
+
+// iniciar carrusel
+goToSlide(0);
+startAutoSlide();
+
+// hover: agranda (CSS) + pausa auto
+insightsCard.addEventListener("mouseenter", () => {
+    isHover = true;
+    stopAutoSlide();
+});
+
+insightsCard.addEventListener("mouseleave", () => {
+    isHover = false;
+    lastX = null;
+    startAutoSlide();
+});
+
+// movimiento horizontal del mouse para cambiar de slide
+insightsCard.addEventListener("mousemove", (e) => {
+    if (!isHover) return;
+
+    if (lastX === null) {
+        lastX = e.clientX;
+        return;
+    }
+
+    const dx = e.clientX - lastX;
+    const now = Date.now();
+
+    if (Math.abs(dx) > SWITCH_THRESHOLD_PX && (now - lastSwitchTime) > SWITCH_MIN_DELAY) {
+        if (dx > 0) {
+            // mueve a la derecha -> slide anterior
+            goToSlide(currentSlide - 1);
+        } else {
+            // mueve a la izquierda -> siguiente slide
+            goToSlide(currentSlide + 1);
+        }
+        lastSwitchTime = now;
+        lastX = e.clientX;
+    }
+});
 
 
 /* ============================================================
@@ -261,6 +339,6 @@ document.getElementById("chartSelect").addEventListener("change", function() {
         document.getElementById("proveedorCard").classList.remove("hidden");
     }
 
-    // Actualiza paneles de texto según la vista
+    // Actualiza paneles textual según la vista
     actualizarPaneles();
 });
