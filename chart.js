@@ -2,9 +2,9 @@
    GRÁFICO 1: Forecast vs Real
 ============================================================ */
 
-const semanas = ["W1","W2","W3","W4","W5","W6","W7"];
-const forecastSemanal = [5,10,85,60,45,25,10];
-const realSemanal     = [40,40,40,40,40,40,40];
+const semanas = ["W1","W2","W3","W4","W5","W6","W7","W8"];
+const forecastSemanal = [5,10,85,60,45,25,10,22];
+const realSemanal     = [15,9,70,50,30,40,12,24];
 
 const ctx1 = document.getElementById("forecastChart");
 const chartForecast = new Chart(ctx1, {
