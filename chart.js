@@ -7,10 +7,10 @@
 const semanas = ["W1", "W2", "W3", "W4", "W5", "W6", "W7"];
 
 // FORECAST por semana (edita a tu gusto)
-const forecastSemanal = [5, 10, 85, 60, 45, 25, 10];
+const forecastSemanal = [5, 10, 85, 60, 45, 25, 10,20];
 
 // DEMANDA REAL por semana (línea recta o variable)
-const realSemanal = [40, 40, 40, 40, 40, 40, 40]; 
+const realSemanal = [42,38,41,40,43,39,40,73]; 
 // Ejemplo recto ↑ — cámbialo como quieras (p. ej. [42,38,41,40,43,39,44])
 
 const ctx1 = document.getElementById("forecastChart");
