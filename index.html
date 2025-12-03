@@ -22,43 +22,35 @@
     </div>
 
     <!-- ===================== -->
-    <!-- PANEL DE KPIs SUPERIOR -->
+    <!-- MENÚ DESPLEGABLE -->
     <!-- ===================== -->
-    <div class="kpi-grid">
-        <div class="kpi-card">
-            <h3>% Desv. Acumulada</h3>
-            <p class="kpi-number">+18%</p>
-        </div>
-        <div class="kpi-card">
-            <h3>Demanda Mes</h3>
-            <p class="kpi-number">80</p>
-        </div>
-        <div class="kpi-card">
-            <h3>Inventario</h3>
-            <p class="kpi-number">Bajo</p>
-        </div>
-        <div class="kpi-card">
-            <h3>Riesgo Quiebre</h3>
-            <p class="kpi-number">Alto</p>
-        </div>
-        <div class="kpi-card">
-            <h3>Pedido Sugerido</h3>
-            <p class="kpi-number">100</p>
-        </div>
+    <div class="chart-selector">
+        <label for="chartSelect">Seleccionar gráfico:</label>
+        <select id="chartSelect">
+            <option value="forecast">Forecast vs Real</option>
+            <option value="desviacion">Desviaciones</option>
+            <option value="torta">Errores por producto</option>
+            <option value="proveedor">Cumplimiento proveedor</option>
+        </select>
     </div>
 
     <!-- ===================== -->
-    <!-- GRÁFICO PRINCIPAL -->
+    <!-- GRÁFICOS (solo uno visible a la vez) -->
     <!-- ===================== -->
-    <div class="chart-card">
+    <div id="forecastCard" class="chart-card">
         <canvas id="forecastChart"></canvas>
     </div>
 
-    <!-- ===================== -->
-    <!-- SEGUNDO GRÁFICO -->
-    <!-- ===================== -->
-    <div class="chart-card">
+    <div id="desviacionCard" class="chart-card hidden">
         <canvas id="desviacionChart"></canvas>
+    </div>
+
+    <div id="tortaCard" class="chart-card hidden">
+        <canvas id="tortaChart"></canvas>
+    </div>
+
+    <div id="proveedorCard" class="chart-card hidden">
+        <canvas id="proveedorChart"></canvas>
     </div>
 
     <!-- ===================== -->
@@ -105,6 +97,7 @@
 
 </body>
 </html>
+
 
 
 
