@@ -4,7 +4,7 @@
 
 const semanas = ["W1","W2","W3","W4","W5","W6","W7"];
 const forecastSemanal = [5,10,85,60,45,25,10];
-const realSemanal     = [40,40,40,40,40,40,40];
+const realSemanal     = [20,70,47,23,67,11,22];
 
 const ctx1 = document.getElementById("forecastChart");
 const chartForecast = new Chart(ctx1, {
@@ -39,8 +39,8 @@ const chartForecast = new Chart(ctx1, {
    GRÁFICO 2: Desviación %
 ============================================================ */
 
-const esperadoMensual = [120, 90, 60];
-const realMensual     = [80, 30, 20];
+const esperadoMensual = [5,10,85,60,45,25,10];
+const realMensual     = [20,70,47,23,67,11,22];
 const desviaciones = realMensual.map((r,i)=>((r-esperadoMensual[i])/esperadoMensual[i])*100);
 
 const ctx2 = document.getElementById("desviacionChart");
