@@ -2,118 +2,61 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Forecast</title>
+    <title>Forecast Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
 
-<div class="container">
+<header>
+    <div class="logo">Buses Hualpen</div>
+</header>
 
-    <h1 class="title">Dashboard de Control de Forecast</h1>
+...
+        <span class="path">T-shirt / black</span>
+        <h1>Forecast</h1>
+    </div>
 
-    <!-- Selector de gráficos -->
-    <select id="chartSelect" class="chart-selector">
-        <option value="forecast">Forecast vs Real</option>
-        <option value="desviacion">Desviaciones</option>
-        <option value="costo">Costos por pieza</option>
-        <option value="proveedor">Cumplimiento proveedor</option>
-    </select>
-
-    <!-- CARD: Forecast -->
-    <div id="forecastCard" class="card">
-        <h3 class="card-title">Forecast vs Real</h3>
+    <div class="chart-card">
         <canvas id="forecastChart"></canvas>
     </div>
 
-    <!-- CARD: Desviación -->
-    <div id="desviacionCard" class="card hidden">
-        <h3 class="card-title">% Desviación</h3>
-        <canvas id="desviacionChart"></canvas>
-    </div>
-
-    <!-- CARD: Costos por pieza (nuevo) -->
-    <div id="costoCard" class="card hidden">
-        <h3 class="card-title">Costos por pieza</h3>
-        <canvas id="costoChart"></canvas>
-    </div>
-
-    <!-- CARD: Cumplimiento proveedor -->
-    <div id="proveedorCard" class="card hidden">
-        <h3 class="card-title">Cumplimiento por proveedor</h3>
-        <canvas id="proveedorChart"></canvas>
-    </div>
-
-    <!-- =====================
-            INSIGHTS
-    ====================== -->
-    <div id="insightsCard" class="insights-card">
-        <div class="insights-inner">
-            <div class="insight-slide"><p id="alertText"></p></div>
-            <div class="insight-slide"><p id="causaText"></p></div>
-            <div class="insight-slide"><p id="recomendacionText"></p></div>
-            <div class="insight-slide">
-                <ul id="rankingList"></ul>
-            </div>
-            <div class="insight-slide"><p id="costoText"></p></div>
-        </div>
-    </div>
-
-    <!-- SIMULADOR -->
-    <div class="sim-card">
-        <h3>Ajustar Forecast</h3>
-        <input type="range" min="-20" max="20" value="0" id="ajusteSlider">
-        <p>Ajuste aplicado: <span id="ajusteValor">0%</span></p>
-    </div>
-
-    <!-- TABLAS (selector) -->
-    <h2 class="subtitle">Tablas</h2>
-
-    <select id="tableSelect" class="chart-selector">
-        <option value="tablaComparacion">Comparación demanda</option>
-        <option value="tablaProveedores">Pedidos por proveedor</option>
-        <option value="tablaInventario">Inventario de piezas</option>
-    </select>
-
-    <!-- TABLA 1 -->
-    <div id="tablaComparacion" class="table-card">
-        <table>
-            <tr><th>Semana</th><th>Forecast</th><th>Real</th></tr>
-            <tr><td>W1</td><td>5</td><td>9</td></tr>
-            <tr><td>W2</td><td>10</td><td>12</td></tr>
-            <tr><td>W3</td><td>85</td><td>81</td></tr>
-        </table>
-    </div>
-
-    <!-- TABLA 2 -->
-    <div id="tablaProveedores" class="table-card hidden">
-        <table>
-            <tr><th>Proveedor</th><th>Pedido</th><th>Entregado</th><th>Retraso</th></tr>
-            <tr><td>MaqParts S.A.</td><td>90</td><td>85</td><td>5</td></tr>
-            <tr><td>TransDiesel Chile</td><td>120</td><td>118</td><td>2</td></tr>
-            <tr><td>Repuestos del Sur Ltda.</td><td>60</td><td>55</td><td>5</td></tr>
-        </table>
-    </div>
-
-    <!-- TABLA 3 -->
-    <div id="tablaInventario" class="table-card hidden">
-        <table>
-            <tr><th>Pieza</th><th>Stock</th><th>Mínimo</th><th>Estado</th></tr>
-            <tr><td>Filtros</td><td>45</td><td>25</td><td>OK</td></tr>
-            <tr><td>Pastillas freno</td><td>12</td><td>20</td><td>Crítico</td></tr>
-            <tr><td>Batería</td><td>9</td><td>10</td><td>Bajo</td></tr>
-        </table>
-    </div>
-
-    <a class="hualpen" href="https://www.buseshualpen.cl/" target="_blank">
-        Ir a Buses Hualpén
-    </a>
-
-    <footer class="copyright">
-        © 2025 Grupo-9 — Todos los derechos reservados.
-    </footer>
+    <table class="forecast-table">
+        <thead>
+            <tr>
+                <th>Mes</th>
+                <th>Esperado</th>
+                <th>Demandado</th>
+                <th>En Inventario</th>
+                <th>Pedido Sugerido</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Mes actual</td>
+                <td>120</td>
+                <td>80</td>
+                <td><span class="badge red">Bajo</span></td>
+                <td>100</td>
+            </tr>
+            <tr>
+                <td>Week 2</td>
+                <td>90</td>
+                <td>30</td>
+                <td><span class="badge yellow">Medio</span></td>
+                <td>60</td>
+            </tr>
+            <tr>
+                <td>Week 3</td>
+                <td>60</td>
+                <td>20</td>
+                <td><span class="badge green">Optimo</span></td>
+                <td>40</td>
+            </tr>
+        </tbody>
+    </table>
 
 </div>
 
