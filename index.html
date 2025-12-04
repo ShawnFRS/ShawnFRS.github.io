@@ -27,7 +27,7 @@
         <select id="chartSelect">
             <option value="forecast">Forecast vs Real</option>
             <option value="desviacion">Desviaciones</option>
-            <option value="torta">Errores por producto</option>
+            <option value="torta">Costos por pieza</option>
             <option value="proveedor">Cumplimiento proveedor</option>
         </select>
     </div>
@@ -74,7 +74,7 @@
             <!-- Slide 4: Ranking y costo -->
             <div class="insight-slide">
                 <h3>Ranking y costo estimado</h3>
-                <p><strong>Productos con mayor error:</strong></p>
+                <p><strong>Piezas con mayor costo estimado:</strong></p>
                 <ul id="rankingList"></ul>
                 <p id="costoText"></p>
             </div>
@@ -100,7 +100,7 @@
         </select>
     </div>
 
-    <!-- TABLA 1: Comparación Forecast vs Real (tu tabla original) -->
+    <!-- TABLA 1: Comparación Forecast vs Real (original) -->
     <table id="tablaComparacion" class="forecast-table">
         <thead>
             <tr>
@@ -276,11 +276,14 @@
         </tbody>
     </table>
 
-    <!-- LINK AL SITIO OFICIAL -->
+    <!-- LINK AL SITIO OFICIAL + COPYRIGHT -->
     <div class="footer-link">
         <a href="https://www.buseshualpen.cl/" target="_blank">
             Sitio oficial de Buses Hualpén
         </a>
+        <div class="footer-meta">
+            © 2025 Grupo-9 — Todos los derechos reservados.
+        </div>
     </div>
 
 </div>
