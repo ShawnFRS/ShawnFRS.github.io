@@ -342,8 +342,10 @@ document.getElementById("chartSelect").addEventListener("change", function() {
     // Actualiza paneles textual según la vista
     actualizarPaneles();
 });
+
+
 /* ============================================================
-   SELECTOR DE TABLAS
+   SELECTOR DE TABLAS (debajo del gráfico)
 ============================================================ */
 
 document.getElementById("tableSelect").addEventListener("change", function () {
@@ -362,4 +364,3 @@ document.getElementById("tableSelect").addEventListener("change", function () {
         document.getElementById("tablaInventario").classList.remove("hidden");
     }
 });
-
