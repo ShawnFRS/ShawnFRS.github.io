@@ -75,26 +75,37 @@ tbody tr:last-child td {
     color: white;
 }
 
-.badge.red { background: #f55b5b; }
-.badge.yellow { background: #ffc847; color: #333; }
-.badge.green { background: #43c16f; }
+.badge.red {
+    background: #f55b5b;
+}
 
-/* selector */
-.hidden { display: none; }
+.badge.yellow {
+    background: #ffc847;
+    color: #333;
+}
 
-.chart-selector, .table-selector {
+.badge.green {
+    background: #43c16f;
+}
+
+/* selector de gráficos */
+.hidden {
+    display: none;
+}
+
+.chart-selector {
     margin-bottom: 20px;
     font-size: 15px;
 }
 
-.chart-selector select, .table-selector select {
+.chart-selector select {
     padding: 8px 12px;
     border-radius: 8px;
     border: 1px solid #ccc;
     font-size: 14px;
 }
 
-/* info cards */
+/* tarjetas de info */
 .info-card {
     background: white;
     padding: 18px;
@@ -110,14 +121,45 @@ tbody tr:last-child td {
     color: #072c3f;
 }
 
-/* carrusel */
+.simu-nota {
+    font-size: 13px;
+    color: #777;
+}
+
+/* slider simulador */
+#ajusteSlider {
+    width: 100%;
+    margin: 8px 0;
+}
+
+/* link footer */
+.footer-link {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.footer-link a {
+    color: #072c3f;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.footer-link a:hover {
+    opacity: 0.7;
+}
+
+/* ==== CARRUSEL DE INSIGHTS ==== */
+
 .insights-card {
     overflow: hidden;
     position: relative;
     transition: transform 0.2s ease;
 }
 
-.insights-card:hover { transform: scale(1.02); }
+.insights-card:hover {
+    transform: scale(1.02);
+}
 
 .insights-inner {
     display: flex;
@@ -131,9 +173,17 @@ tbody tr:last-child td {
     box-sizing: border-box;
 }
 
-.footer-link {
-    margin-top: 40px;
-    text-align: center;
-    font-size: 14px;
+/* ==== SELECTOR DE TABLAS ==== */
+
+.table-selector {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 15px;
 }
 
+.table-selector select {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
