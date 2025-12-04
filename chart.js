@@ -76,23 +76,82 @@ const chartDesviacion = new Chart(ctx2, {
 
 
 /* ============================================================
-   GRÁFICO 3: TORTA – Productos con mayor error
+   GRÁFICO 3: Costos por pieza (antes torta)
 ============================================================ */
+/*
+   Mantengo los nombres de variables (productos, errorProductos)
+   para no romper nada en actualizarPaneles ni en el ranking.
+   Ahora representan piezas y su costo estimado.
+*/
 
-const productos = ["Producto A", "Producto B", "Producto C", "Producto D"];
-const errorProductos = [40, 30, 20, 10];
+const productos = [
+    "Filtros (aire, aceite, combustible)",
+    "Pastillas de freno / zapatas",
+    "Discos o tambores de freno",
+    "Neumáticos",
+    "Batería",
+    "Alternador",
+    "Motor de arranque",
+    "Correas (alternador, A/C, bomba de agua)",
+    "Amortiguadores",
+    "Bolsas de aire (suspensión)",
+    "Mangueras de freno o aire",
+    "Compresor de aire",
+    "Bomba de combustible",
+    "Inyectores",
+    "Puertas automáticas (motores y sensores)"
+];
+
+// costos inventados en miles de CLP (por ejemplo)
+const errorProductos = [
+    40,   // Filtros
+    55,   // Pastillas
+    80,   // Discos
+    150,  // Neumáticos
+    90,   // Batería
+    130,  // Alternador
+    120,  // Motor de arranque
+    45,   // Correas
+    110,  // Amortiguadores
+    160,  // Bolsas de aire
+    35,   // Mangueras
+    170,  // Compresor de aire
+    95,   // Bomba combustible
+    85,   // Inyectores
+    180   // Puertas automáticas
+];
 
 const ctx3 = document.getElementById("tortaChart");
 const chartTorta = new Chart(ctx3, {
-    type: "pie",
+    type: "bar",
     data: {
         labels: productos,
         datasets: [{
+            label: "Costo estimado (miles de CLP)",
             data: errorProductos,
-            backgroundColor: ["#072c3f", "#f55b5b", "#ffc847", "#43c16f"]
+            backgroundColor: [
+                "#072c3f", "#f55b5b", "#ffc847", "#43c16f",
+                "#072c3f", "#f55b5b", "#ffc847", "#43c16f",
+                "#072c3f", "#f55b5b", "#ffc847", "#43c16f",
+                "#072c3f", "#f55b5b", "#ffc847"
+            ]
         }]
     },
-    options: { responsive: true }
+    options: { 
+        responsive: true,
+        plugins: { legend: { display: false }},
+        scales: {
+            x: {
+                ticks: {
+                    maxRotation: 60,
+                    minRotation: 40
+                }
+            },
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
 });
 
 
@@ -192,7 +251,7 @@ function actualizarPaneles() {
         recomendacion = "No se requieren ajustes al forecast por ahora. Continuar monitoreo regular y documentar los factores que están manteniendo la estabilidad.";
     }
 
-    // Ranking de productos por error (usando el gráfico de torta)
+    // Ranking de productos por "error" (ahora costo relativo)
     const ranking = productos
         .map((p, i) => ({ producto: p, error: errorProductos[i] }))
         .sort((a, b) => b.error - a.error);
@@ -200,7 +259,7 @@ function actualizarPaneles() {
     rankingList.innerHTML = "";
     ranking.forEach(item => {
         const li = document.createElement("li");
-        li.textContent = `${item.producto}: ${item.error}% del error total de forecast`;
+        li.textContent = `${item.producto}: ${item.error} (valor relativo)`;
         rankingList.appendChild(li);
     });
 
@@ -223,7 +282,7 @@ function actualizarPaneles() {
     } else if (seleccionado === "desviacion") {
         alertText.textContent = mensajeAlerta + " (Vista: Desviaciones por período)";
     } else if (seleccionado === "torta") {
-        alertText.textContent = "Analizando la concentración del error por producto. Revisa el ranking para identificar qué ítems rompen más el forecast.";
+        alertText.textContent = "Analizando ahora el costo relativo por pieza. Revisa el ranking para identificar cuáles son las más costosas.";
     } else if (seleccionado === "proveedor") {
         alertText.textContent = "Evaluando el impacto del cumplimiento de proveedores en la estabilidad del forecast.";
     }
