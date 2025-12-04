@@ -2,49 +2,28 @@
    GRÁFICO 1: Forecast vs Real
 ============================================================ */
 
-const semanas = ["W1","W2","W3","W4","W5","W6","W7"];
-const forecastSemanal = [5,10,85,60,45,25,10];
-const realSemanal     = [9,12,81,35,56,31,12];
-
 const ctx1 = document.getElementById("forecastChart");
-const chartForecast = new Chart(ctx1, {
+
+new Chart(ctx1, {
     type: "line",
     data: {
-        labels: semanas,
+        labels: ["Lun", "Mar", "Mié", "Jue", "Vie"],
         datasets: [
             {
                 label: "Forecast",
-                data: forecastSemanal,
+                data: [100, 120, 130, 140, 150],
                 borderColor: "#072c3f",
-                borderWidth: 3,
-                pointRadius: 3,
-                tension: 0.35
+                borderWidth: 2
             },
             {
-                label: "Demanda Real",
-                data: realSemanal,
+                label: "Real",
+                data: [95, 125, 128, 150, 145],
                 borderColor: "#f55b5b",
-                borderWidth: 3,
-                pointRadius: 0,
-                borderDash: [6, 6],
-                tension: 0
-            },
-            {
-                label: "Forecast ajustado",
-                data: forecastSemanal.slice(), // copia
-                borderColor: "#ffc847",
-                borderWidth: 2,
-                pointRadius: 0,
-                borderDash: [4, 4],
-                tension: 0.35
+                borderWidth: 2
             }
         ]
     },
-    options: {
-        responsive: true,
-        plugins: { legend: { display: true }},
-        scales: { y: { beginAtZero: true } }
-    }
+    options: { responsive: true }
 });
 
 
@@ -52,44 +31,16 @@ const chartForecast = new Chart(ctx1, {
    GRÁFICO 2: Desviación %
 ============================================================ */
 
-const esperadoMensual = [120, 90, 60];
-const realMensual     = [80, 30, 20];
-const desviaciones = realMensual.map((r,i)=>((r-esperadoMensual[i])/esperadoMensual[i])*100);
-
 const ctx2 = document.getElementById("desviacionChart");
-const chartDesviacion = new Chart(ctx2, {
+
+new Chart(ctx2, {
     type: "bar",
     data: {
-        labels: ["Mes actual", "Week 2", "Week 3"],
+        labels: ["Lun", "Mar", "Mié", "Jue", "Vie"],
         datasets: [{
-            label: "% Desviación",
-            data: desviaciones,
-            backgroundColor: ["#f55b5b", "#ffc847", "#43c16f"]
-        }]
-    },
-    options: {
-        responsive: true,
-        plugins: { legend: { display: false }},
-        scales: { y: { beginAtZero: true } }
-    }
-});
-
-
-/* ============================================================
-   GRÁFICO 3: TORTA – Productos con mayor error
-============================================================ */
-
-const productos = ["Producto A", "Producto B", "Producto C", "Producto D"];
-const errorProductos = [40, 30, 20, 10];
-
-const ctx3 = document.getElementById("tortaChart");
-const chartTorta = new Chart(ctx3, {
-    type: "pie",
-    data: {
-        labels: productos,
-        datasets: [{
-            data: errorProductos,
-            backgroundColor: ["#072c3f", "#f55b5b", "#ffc847", "#43c16f"]
+            label: "Desviación %",
+            data: [5, -4, 2, -7, 3],
+            backgroundColor: "#072c3f"
         }]
     },
     options: { responsive: true }
@@ -97,270 +48,71 @@ const chartTorta = new Chart(ctx3, {
 
 
 /* ============================================================
-   GRÁFICO 4: Barras – Cumplimiento por proveedor
+   GRÁFICO 4: Cumplimiento por proveedor
 ============================================================ */
 
-const proveedores = ["Proveedor X", "Proveedor Y", "Proveedor Z"];
-const cumplimiento = [92, 85, 60];
-
 const ctx4 = document.getElementById("proveedorChart");
-const chartProveedor = new Chart(ctx4, {
+
+new Chart(ctx4, {
     type: "bar",
     data: {
-        labels: proveedores,
+        labels: ["Proveedor A", "Proveedor B", "Proveedor C"],
         datasets: [{
-            label: "% Cumplimiento",
-            data: cumplimiento,
-            backgroundColor: ["#43c16f", "#ffc847", "#f55b5b"]
+            label: "Cumplimiento",
+            data: [95, 83, 76],
+            backgroundColor: "#ffc847"
+        }]
+    },
+    options: { responsive: true }
+});
+
+
+/* ============================================================
+   GRÁFICO 3 (NUEVO): HISTOGRAMA COSTOS POR PRODUCTO
+============================================================ */
+
+const ctx3 = document.getElementById("histogramaChart");
+
+new Chart(ctx3, {
+    type: "bar",
+    data: {
+        labels: ["Pieza A", "Pieza B", "Pieza C", "Pieza D", "Pieza E"],
+        datasets: [{
+            label: "Costo por producto",
+            data: [12000, 18500, 25000, 16000, 21000],  
+            backgroundColor: "#072c3f"
         }]
     },
     options: {
         responsive: true,
-        plugins: { legend: { display: false }},
+        plugins: { legend: { display: false } },
         scales: { y: { beginAtZero: true } }
     }
 });
 
 
 /* ============================================================
-   SIMULADOR DE AJUSTE FORECAST
-============================================================ */
-
-const slider = document.getElementById("ajusteSlider");
-const ajusteValor = document.getElementById("ajusteValor");
-
-slider.addEventListener("input", function() {
-    const ajuste = parseInt(this.value);
-    const factor = 1 + ajuste / 100;
-    ajusteValor.textContent = (ajuste > 0 ? "+" + ajuste : ajuste) + "%";
-    
-    const ajustado = forecastSemanal.map(v => Math.round(v * factor));
-    chartForecast.data.datasets[2].data = ajustado;
-    chartForecast.update();
-});
-
-
-/* ============================================================
-   PANEL DE ALERTAS, CAUSA, RECOMENDACIÓN, RANKING Y COSTO
-============================================================ */
-
-function actualizarPaneles() {
-    const alertText = document.getElementById("alertText");
-    const causaText = document.getElementById("causaText");
-    const recomendacionText = document.getElementById("recomendacionText");
-    const rankingList = document.getElementById("rankingList");
-    const costoText = document.getElementById("costoText");
-    const chartSelect = document.getElementById("chartSelect");
-
-    // Métricas base
-    const maxDesv = Math.max(...desviaciones);
-    const minDesv = Math.min(...desviaciones);
-    const idxMax = desviaciones.indexOf(maxDesv);
-    const etiquetasDesv = ["Mes actual", "Week 2", "Week 3"];
-
-    // ALERTA
-    let mensajeAlerta = "";
-    if (maxDesv > 15) {
-        mensajeAlerta = `⚠️ Alerta crítica: La mayor desviación positiva es de ${maxDesv.toFixed(1)}% en ${etiquetasDesv[idxMax]}. El forecast está quedando corto frente a la demanda real.`;
-    } else if (maxDesv > 8) {
-        mensajeAlerta = `⚠️ Atención: Se observa una desviación de ${maxDesv.toFixed(1)}% en ${etiquetasDesv[idxMax]}. Es recomendable revisar el forecast del trimestre.`;
-    } else if (maxDesv > 3) {
-        mensajeAlerta = `ℹ️ Desviaciones moderadas: la mayor es de ${maxDesv.toFixed(1)}%. Se sugiere seguir monitoreando.`;
-    } else {
-        mensajeAlerta = `✅ Forecast bajo control: las desviaciones actuales son menores al 3%.`;
-    }
-
-    // Causa probable (ligeramente aleatoria)
-    const causas = [
-        "Aumento inesperado de demanda por nuevos contratos de servicio.",
-        "Cambio en la operación (más frecuencias o nuevas rutas).",
-        "Retraso en reposición de inventario por parte de un proveedor clave.",
-        "Error de estimación en el forecast original por falta de historial.",
-        "Efecto estacional no considerado en el modelo de forecast."
-    ];
-    const causaSeleccionada = causas[Math.floor(Math.random() * causas.length)];
-
-    // Recomendación automática (en base a la desviación)
-    let recomendacion = "";
-    if (maxDesv > 15) {
-        recomendacion = "Recalcular el forecast del trimestre con un ajuste ≥ 12%, aumentar stock de seguridad y revisar contratos con proveedores para soportar el nuevo nivel de demanda.";
-    } else if (maxDesv > 8) {
-        recomendacion = "Aplicar un ajuste moderado al forecast (entre 5% y 10%) y monitorear semanalmente la demanda real para confirmar la tendencia.";
-    } else if (maxDesv > 3) {
-        recomendacion = "Mantener el forecast actual pero activar alertas tempranas si la desviación supera el 10% en los próximos meses.";
-    } else {
-        recomendacion = "No se requieren ajustes al forecast por ahora. Continuar monitoreo regular y documentar los factores que están manteniendo la estabilidad.";
-    }
-
-    // Ranking de productos por error (usando el gráfico de torta)
-    const ranking = productos
-        .map((p, i) => ({ producto: p, error: errorProductos[i] }))
-        .sort((a, b) => b.error - a.error);
-
-    rankingList.innerHTML = "";
-    ranking.forEach(item => {
-        const li = document.createElement("li");
-        li.textContent = `${item.producto}: ${item.error}% del error total de forecast`;
-        rankingList.appendChild(li);
-    });
-
-    // Costo estimado (muy simple: desviación absoluta * factor)
-    const costoEstimado = desviaciones
-        .reduce((acc, d) => acc + Math.abs(d) * 50000, 0); // factor inventado
-
-    const costoFormato = costoEstimado.toLocaleString("es-CL", {
-        style: "currency",
-        currency: "CLP",
-        maximumFractionDigits: 0
-    });
-
-    costoText.textContent = `Costo estimado asociado a las desviaciones actuales: ${costoFormato}.`;
-
-    // Ajustar mensajes según gráfico seleccionado (sólo contexto)
-    const seleccionado = chartSelect.value;
-    if (seleccionado === "forecast") {
-        alertText.textContent = mensajeAlerta + " (Vista: Forecast vs Real)";
-    } else if (seleccionado === "desviacion") {
-        alertText.textContent = mensajeAlerta + " (Vista: Desviaciones por período)";
-    } else if (seleccionado === "torta") {
-        alertText.textContent = "Analizando la concentración del error por producto. Revisa el ranking para identificar qué ítems rompen más el forecast.";
-    } else if (seleccionado === "proveedor") {
-        alertText.textContent = "Evaluando el impacto del cumplimiento de proveedores en la estabilidad del forecast.";
-    }
-
-    causaText.textContent = causaSeleccionada;
-    recomendacionText.textContent = recomendacion;
-}
-
-// Llamar una vez al inicio
-actualizarPaneles();
-
-
-/* ============================================================
-   CARRUSEL DE INSIGHTS: AUTO-SLIDE + MOUSE HORIZONTAL
-============================================================ */
-
-const insightsCard = document.getElementById("insightsCard");
-const insightsInner = document.querySelector(".insights-inner");
-const slides = document.querySelectorAll(".insight-slide");
-
-let currentSlide = 0;
-let autoInterval = null;
-let lastX = null;
-let lastSwitchTime = 0;
-const SWITCH_THRESHOLD_PX = 40;
-const SWITCH_MIN_DELAY = 600; // ms
-let isHover = false;
-
-function goToSlide(index) {
-    const total = slides.length;
-    currentSlide = (index + total) % total;
-    insightsInner.style.transform = `translateX(-${currentSlide * 100}%)`;
-}
-
-function startAutoSlide() {
-    if (autoInterval) clearInterval(autoInterval);
-    autoInterval = setInterval(() => {
-        goToSlide(currentSlide + 1);
-    }, 6000);
-}
-
-function stopAutoSlide() {
-    if (autoInterval) {
-        clearInterval(autoInterval);
-        autoInterval = null;
-    }
-}
-
-// iniciar carrusel
-goToSlide(0);
-startAutoSlide();
-
-// hover: agranda (CSS) + pausa auto
-insightsCard.addEventListener("mouseenter", () => {
-    isHover = true;
-    stopAutoSlide();
-});
-
-insightsCard.addEventListener("mouseleave", () => {
-    isHover = false;
-    lastX = null;
-    startAutoSlide();
-});
-
-// movimiento horizontal del mouse para cambiar de slide
-insightsCard.addEventListener("mousemove", (e) => {
-    if (!isHover) return;
-
-    if (lastX === null) {
-        lastX = e.clientX;
-        return;
-    }
-
-    const dx = e.clientX - lastX;
-    const now = Date.now();
-
-    if (Math.abs(dx) > SWITCH_THRESHOLD_PX && (now - lastSwitchTime) > SWITCH_MIN_DELAY) {
-        if (dx > 0) {
-            // mueve a la derecha -> slide anterior
-            goToSlide(currentSlide - 1);
-        } else {
-            // mueve a la izquierda -> siguiente slide
-            goToSlide(currentSlide + 1);
-        }
-        lastSwitchTime = now;
-        lastX = e.clientX;
-    }
-});
-
-
-/* ============================================================
-   LÓGICA DEL MENÚ (mostrar/ocultar gráficas + actualizar paneles)
+   SELECTORES (NO SE TOCAN)
 ============================================================ */
 
 document.getElementById("chartSelect").addEventListener("change", function() {
-    // Oculta todos
-    document.getElementById("forecastCard").classList.add("hidden");
-    document.getElementById("desviacionCard").classList.add("hidden");
-    document.getElementById("tortaCard").classList.add("hidden");
-    document.getElementById("proveedorCard").classList.add("hidden");
+    document.querySelectorAll(".chart-card").forEach(card => card.classList.add("hidden"));
+    document.getElementById("chart-" + this.value).classList.remove("hidden");
+});
 
-    // Muestra el seleccionado
-    if (this.value === "forecast") {
-        document.getElementById("forecastCard").classList.remove("hidden");
-    }
-    if (this.value === "desviacion") {
-        document.getElementById("desviacionCard").classList.remove("hidden");
-    }
-    if (this.value === "torta") {
-        document.getElementById("tortaCard").classList.remove("hidden");
-    }
-    if (this.value === "proveedor") {
-        document.getElementById("proveedorCard").classList.remove("hidden");
-    }
-
-    // Actualiza paneles textual según la vista
-    actualizarPaneles();
+document.getElementById("tableSelect").addEventListener("change", function() {
+    document.querySelectorAll("table").forEach(t => t.classList.add("hidden"));
+    document.getElementById("table-" + this.value).classList.remove("hidden");
 });
 
 
 /* ============================================================
-   SELECTOR DE TABLAS (debajo del gráfico)
+   CARRUSEL (NO TOCAR)
 ============================================================ */
 
-document.getElementById("tableSelect").addEventListener("change", function () {
-
-    document.getElementById("tablaComparacion").classList.add("hidden");
-    document.getElementById("tablaProveedores").classList.add("hidden");
-    document.getElementById("tablaInventario").classList.add("hidden");
-
-    if (this.value === "tablaComparacion") {
-        document.getElementById("tablaComparacion").classList.remove("hidden");
-    }
-    if (this.value === "tablaProveedores") {
-        document.getElementById("tablaProveedores").classList.remove("hidden");
-    }
-    if (this.value === "tablaInventario") {
-        document.getElementById("tablaInventario").classList.remove("hidden");
-    }
-});
+let insightPos = 0;
+setInterval(() => {
+    insightPos = (insightPos + 1) % 3;
+    document.getElementById("insightsInner").style.transform =
+        `translateX(-${insightPos * 100}%)`;
+}, 3000);
