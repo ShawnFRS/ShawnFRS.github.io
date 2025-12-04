@@ -566,7 +566,7 @@ function startAutoSlide() {
     if (autoInterval) clearInterval(autoInterval);
     autoInterval = setInterval(() => {
         goToSlide(currentSlide + 1);
-    }, 6000);
+    }, 3500);
 }
 
 function stopAutoSlide() {
