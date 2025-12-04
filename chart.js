@@ -76,72 +76,38 @@ const chartDesviacion = new Chart(ctx2, {
 
 
 /* ============================================================
-   GRÁFICO 3: Costos por pieza (barras)
+   GRÁFICO 3 – Costos por pieza
 ============================================================ */
 
 const piezas = [
-    "Filtros",
-    "Pastillas freno",
-    "Discos freno",
-    "Neumáticos",
-    "Batería",
-    "Alternador",
-    "Motor arranque",
-    "Correas",
-    "Amortiguadores",
-    "Bolsas de aire",
-    "Mangueras",
-    "Compresor aire",
-    "Bomba combustible",
-    "Inyectores",
-    "Puertas automáticas"
+    "Filtros", "Pastillas freno", "Discos/Tambores",
+    "Neumáticos", "Batería", "Alternador",
+    "Motor arranque", "Correas", "Amortiguadores",
+    "Bolsas aire", "Mangueras", "Compresor aire",
+    "Bomba combustible", "Inyectores", "Puertas automáticas"
 ];
 
-// costos estimados (miles de CLP, por ejemplo)
-const costosPiezas = [
-    80, 60, 120, 300, 150,
-    220, 250, 90, 200, 260,
-    70, 280, 180, 140, 320
+const costoPiezas = [
+    18000, 35000, 52000, 90000, 70000,
+    120000, 95000, 40000, 85000, 115000,
+    38000, 140000, 75000, 68000, 160000
 ];
 
-const ctx3 = document.getElementById("tortaChart");
-const chartCostos = new Chart(ctx3, {
+const ctxCosto = document.getElementById("costoChart");
+const chartCosto = new Chart(ctxCosto, {
     type: "bar",
     data: {
         labels: piezas,
         datasets: [{
-            label: "Costo estimado por pieza",
-            data: costosPiezas,
-            backgroundColor: piezas.map((_, i) => {
-                const colors = ["#072c3f", "#f55b5b", "#ffc847", "#43c16f"];
-                return colors[i % colors.length];
-            })
+            label: "Costo (CLP)",
+            data: costoPiezas,
+            backgroundColor: "#072c3f"
         }]
     },
     options: {
         responsive: true,
-        plugins: { 
-            legend: { display: false },
-            tooltip: {
-                callbacks: {
-                    label: function(context) {
-                        const value = context.parsed.y;
-                        return `Costo: ${value.toLocaleString("es-CL")} mil CLP`;
-                    }
-                }
-            }
-        },
-        scales: {
-            x: {
-                ticks: {
-                    maxRotation: 60,
-                    minRotation: 40
-                }
-            },
-            y: {
-                beginAtZero: true
-            }
-        }
+        plugins: { legend: { display: false }},
+        scales: { y: { beginAtZero: true } }
     }
 });
 
@@ -371,8 +337,8 @@ document.getElementById("chartSelect").addEventListener("change", function() {
     // Oculta todos
     document.getElementById("forecastCard").classList.add("hidden");
     document.getElementById("desviacionCard").classList.add("hidden");
-    document.getElementById("tortaCard").classList.add("hidden");
     document.getElementById("proveedorCard").classList.add("hidden");
+    document.getElementById("costoCard").classList.add("hidden");
 
     // Muestra el seleccionado
     if (this.value === "forecast") {
@@ -381,9 +347,10 @@ document.getElementById("chartSelect").addEventListener("change", function() {
     if (this.value === "desviacion") {
         document.getElementById("desviacionCard").classList.remove("hidden");
     }
-    if (this.value === "torta") {
-        document.getElementById("tortaCard").classList.remove("hidden");
-    }
+   if (this.value === "costo") {
+       document.getElementById("costoCard").classList.remove("hidden");
+   }
+
     if (this.value === "proveedor") {
         document.getElementById("proveedorCard").classList.remove("hidden");
     }
