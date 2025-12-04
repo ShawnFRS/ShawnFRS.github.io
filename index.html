@@ -1,141 +1,110 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Forecast Dashboard</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-
-<body>
-
-<header>
-    <div class="logo">Buses Hualpen</div>
-</header>
-
-<div class="container">
-    
-    <div class="title">
-        <span class="path">T-shirt / black</span>
-        <h1>Forecast</h1>
-    </div>
-
-    <!-- MENÚ DESPLEGABLE DE GRÁFICOS -->
-    <div class="chart-selector">
-        <label for="chartSelect">Seleccionar gráfico:</label>
-        <select id="chartSelect">
-            <option value="forecast">Forecast vs Real</option>
-            <option value="desviacion">Desviaciones</option>
-            <option value="torta">Errores por producto</option>
-            <option value="proveedor">Cumplimiento proveedor</option>
-        </select>
-    </div>
-
-    <!-- GRÁFICOS (solo uno visible a la vez) -->
-    <div id="forecastCard" class="chart-card">
-        <canvas id="forecastChart" height="120"></canvas>
-    </div>
-
-    <div id="desviacionCard" class="chart-card hidden">
-        <canvas id="desviacionChart" height="120"></canvas>
-    </div>
-
-    <div id="tortaCard" class="chart-card hidden">
-        <canvas id="tortaChart" height="120"></canvas>
-    </div>
-
-    <div id="proveedorCard" class="chart-card hidden">
-        <canvas id="proveedorChart" height="120"></canvas>
-    </div>
-
-    <!-- CUADRO ÚNICO CON CARRUSEL DE INSIGHTS -->
-    <div id="insightsCard" class="info-card insights-card">
-        <div class="insights-inner">
-            
-            <!-- Slide 1: Alertas -->
-            <div class="insight-slide">
-                <h3>Alertas del forecast</h3>
-                <p id="alertText">Cargando alertas...</p>
-            </div>
-
-            <!-- Slide 2: Causa probable -->
-            <div class="insight-slide">
-                <h3>Causa probable</h3>
-                <p id="causaText">Analizando posibles causas...</p>
-            </div>
-
-            <!-- Slide 3: Recomendación -->
-            <div class="insight-slide">
-                <h3>Recomendación automática</h3>
-                <p id="recomendacionText">Calculando recomendación...</p>
-            </div>
-
-            <!-- Slide 4: Ranking y costo -->
-            <div class="insight-slide">
-                <h3>Ranking y costo estimado</h3>
-                <p><strong>Productos con mayor error:</strong></p>
-                <ul id="rankingList"></ul>
-                <p id="costoText"></p>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- PANEL DE SIMULADOR (separado del carrusel) -->
-    <div id="simuladorCard" class="info-card">
-        <h3>Simulador de ajuste de forecast</h3>
-        <p>Ajuste actual: <span id="ajusteValor">0%</span></p>
-        <input type="range" id="ajusteSlider" min="-30" max="30" value="0">
-        <p class="simu-nota">Mueve el deslizador para ver cómo cambiaría el forecast ajustado.</p>
-    </div>
-
-    <!-- TABLA DETALLE (igual que antes) -->
-    <table class="forecast-table">
-        <thead>
-            <tr>
-                <th>Mes</th>
-                <th>Esperado</th>
-                <th>Demandado</th>
-                <th>En Inventario</th>
-                <th>Pedido Sugerido</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Mes actual</td>
-                <td>120</td>
-                <td>80</td>
-                <td><span class="badge red">Bajo</span></td>
-                <td>100</td>
-            </tr>
-            <tr>
-                <td>Week 2</td>
-                <td>90</td>
-                <td>30</td>
-                <td><span class="badge yellow">Medio</span></td>
-                <td>60</td>
-            </tr>
-            <tr>
-                <td>Week 3</td>
-                <td>60</td>
-                <td>20</td>
-                <td><span class="badge green">Optimo</span></td>
-                <td>40</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <!-- LINK AL SITIO OFICIAL -->
-    <div class="footer-link">
-        <a href="https://www.buseshualpen.cl/" target="_blank">
-            Sitio oficial de Buses Hualpén
-        </a>
-    </div>
-
+<!-- Selector de tabla -->
+<div class="table-selector">
+    <label for="tableSelect">Seleccionar tabla:</label>
+    <select id="tableSelect">
+        <option value="tablaComparacion">Comparación Forecast</option>
+        <option value="tablaProveedores">Pedidos por Proveedor</option>
+        <option value="tablaInventario">Inventario de Piezas</option>
+    </select>
 </div>
 
-<script src="chart.js"></script>
+<!-- TABLA 1: Comparación Forecast -->
+<table id="tablaComparacion" class="forecast-table">
+    <thead>
+        <tr>
+            <th>Mes</th>
+            <th>Esperado</th>
+            <th>Demandado</th>
+            <th>Inventario</th>
+            <th>Pedido Sugerido</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Mes actual</td>
+            <td>120</td>
+            <td>80</td>
+            <td><span class="badge red">Bajo</span></td>
+            <td>100</td>
+        </tr>
+        <tr>
+            <td>Week 2</td>
+            <td>90</td>
+            <td>30</td>
+            <td><span class="badge yellow">Medio</span></td>
+            <td>60</td>
+        </tr>
+        <tr>
+            <td>Week 3</td>
+            <td>60</td>
+            <td>20</td>
+            <td><span class="badge green">Óptimo</span></td>
+            <td>40</td>
+        </tr>
+    </tbody>
+</table>
 
-</body>
-</html>
+<!-- TABLA 2: Pedidos por Proveedor -->
+<table id="tablaProveedores" class="forecast-table hidden">
+    <thead>
+        <tr>
+            <th>Proveedor</th>
+            <th>Pedido Solicitado</th>
+            <th>Entregado</th>
+            <th>Retraso</th>
+            <th>Cumplimiento</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>TransDiesel Chile</td>
+            <td>150</td>
+            <td>140</td>
+            <td>2 días</td>
+            <td><span class="badge yellow">93%</span></td>
+        </tr>
+        <tr>
+            <td>MaqParts S.A.</td>
+            <td>200</td>
+            <td>180</td>
+            <td>0 días</td>
+            <td><span class="badge green">100%</span></td>
+        </tr>
+        <tr>
+            <td>Repuestos del Sur Ltda.</td>
+            <td>90</td>
+            <td>70</td>
+            <td>4 días</td>
+            <td><span class="badge red">78%</span></td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- TABLA 3: Inventario de piezas -->
+<table id="tablaInventario" class="forecast-table hidden">
+    <thead>
+        <tr>
+            <th>Pieza</th>
+            <th>Stock Actual</th>
+            <th>Stock Mínimo</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>Filtros (aire/aceite/combustible)</td><td>45</td><td>30</td><td><span class="badge green">Óptimo</span></td></tr>
+        <tr><td>Pastillas / Zapatas</td><td>20</td><td>25</td><td><span class="badge red">Bajo</span></td></tr>
+        <tr><td>Discos / Tambores freno</td><td>12</td><td>10</td><td><span class="badge green">Óptimo</span></td></tr>
+        <tr><td>Neumáticos</td><td>8</td><td>12</td><td><span class="badge yellow">Medio</span></td></tr>
+        <tr><td>Baterías</td><td>15</td><td>10</td><td><span class="badge green">Óptimo</span></td></tr>
+        <tr><td>Alternadores</td><td>6</td><td>6</td><td><span class="badge yellow">Justo</span></td></tr>
+        <tr><td>Motores de Arranque</td><td>4</td><td>6</td><td><span class="badge red">Crítico</span></td></tr>
+        <tr><td>Correas</td><td>30</td><td>25</td><td><span class="badge green">Óptimo</span></td></tr>
+        <tr><td>Amortiguadores</td><td>18</td><td>15</td><td><span class="badge green">Óptimo</span></td></tr>
+        <tr><td>Bolsas de aire</td><td>5</td><td>10</td><td><span class="badge red">Bajo</span></td></tr>
+        <tr><td>Mangueras aire/freno</td><td>22</td><td>20</td><td><span class="badge green">Óptimo</span></td></tr>
+        <tr><td>Compresor de aire</td><td>3</td><td>5</td><td><span class="badge red">Crítico</span></td></tr>
+        <tr><td>Bomba de combustible</td><td>9</td><td>8</td><td><span class="badge green">Óptimo</span></td></tr>
+        <tr><td>Inyectores</td><td>7</td><td>5</td><td><span class="badge green">Óptimo</span></td></tr>
+        <tr><td>Puertas automáticas</td><td>2</td><td>4</td><td><span class="badge red">Crítico</span></td></tr>
+    </tbody>
+</table>
