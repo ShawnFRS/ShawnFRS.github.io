@@ -178,3 +178,15 @@ tbody tr:last-child td {
     margin: 0 auto;
     display: block;
 }
+.table-selector {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+.table-selector select {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
