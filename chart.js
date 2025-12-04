@@ -2,9 +2,9 @@
    GRÁFICO 1: Forecast vs Real
 ============================================================ */
 
-const semanas = ["W1","W2","W3","W4","W5","W6","W7"];
-const forecastSemanal = [5,10,85,60,45,25,10];
-const realSemanal     = [9,12,81,35,56,31,12];
+const semanas = ["M1","M2","M3","M4","M5","M6","M7","M8","M9","M10","M11","12"];
+const forecastSemanal = [5,10,85,60,45,25,10,12,8,9,13,11];
+const realSemanal     = [9,12,81,35,56,31,12,13,10,13,10,9];
 
 const ctx1 = document.getElementById("forecastChart");
 const chartForecast = new Chart(ctx1, {
@@ -173,7 +173,7 @@ const productosConCosto = [
     "Compresor de aire"
 ];
 const costosPorProducto = [
-    2850000,  // Neumáticos (set completo)
+    285000,  // Neumáticos (set completo)
     780000,   // Pastillas de freno
     450000,   // Filtros
     520000,   // Batería
@@ -181,7 +181,7 @@ const costosPorProducto = [
     950000,   // Amortiguadores
     680000,   // Motor de arranque
     850000,   // Alternador
-    1450000,  // Bolsas de aire
+    145000,  // Bolsas de aire
     2100000   // Compresor de aire
 ];
 
