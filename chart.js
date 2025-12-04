@@ -342,3 +342,24 @@ document.getElementById("chartSelect").addEventListener("change", function() {
     // Actualiza paneles textual según la vista
     actualizarPaneles();
 });
+/* ============================================================
+   SELECTOR DE TABLAS
+============================================================ */
+
+document.getElementById("tableSelect").addEventListener("change", function () {
+
+    document.getElementById("tablaComparacion").classList.add("hidden");
+    document.getElementById("tablaProveedores").classList.add("hidden");
+    document.getElementById("tablaInventario").classList.add("hidden");
+
+    if (this.value === "tablaComparacion") {
+        document.getElementById("tablaComparacion").classList.remove("hidden");
+    }
+    if (this.value === "tablaProveedores") {
+        document.getElementById("tablaProveedores").classList.remove("hidden");
+    }
+    if (this.value === "tablaInventario") {
+        document.getElementById("tablaInventario").classList.remove("hidden");
+    }
+});
+
