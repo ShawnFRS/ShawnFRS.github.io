@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Forecast Dashboard</title>
+    <title>Forecast Dashboard - Buses Hualpén</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -11,19 +11,54 @@
 <body>
 
 <header>
-    <div class="logo">Buses Hualpen</div>
+    <div class="header-content">
+        <div class="logo">🚌 Buses Hualpén</div>
+        <div class="header-subtitle">Sistema de Gestión de Forecast</div>
+    </div>
 </header>
 
 <div class="container">
     
     <div class="title">
-        <span class="path">T-shirt / black</span>
-        <h1>Forecast</h1>
+        <span class="path">Dashboard / Forecast</span>
+        <h1>Panel de Control de Inventario</h1>
+    </div>
+
+    <!-- KPIs PRINCIPALES -->
+    <div class="kpi-container">
+        <div class="kpi-card">
+            <div class="kpi-icon">📊</div>
+            <div class="kpi-content">
+                <div class="kpi-label">Desviación Promedio</div>
+                <div class="kpi-value" id="kpiDesviacion">-33.3%</div>
+            </div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-icon">💰</div>
+            <div class="kpi-content">
+                <div class="kpi-label">Costo Total Productos</div>
+                <div class="kpi-value" id="kpiCostoTotal">$11.8M</div>
+            </div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-icon">✅</div>
+            <div class="kpi-content">
+                <div class="kpi-label">Cumplimiento Proveedores</div>
+                <div class="kpi-value" id="kpiCumplimiento">79%</div>
+            </div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-icon">⚠️</div>
+            <div class="kpi-content">
+                <div class="kpi-label">Items Críticos</div>
+                <div class="kpi-value" id="kpiCriticos">4</div>
+            </div>
+        </div>
     </div>
 
     <!-- MENÚ DESPLEGABLE DE GRÁFICOS -->
     <div class="chart-selector">
-        <label for="chartSelect">Seleccionar gráfico:</label>
+        <label for="chartSelect">📈 Seleccionar gráfico:</label>
         <select id="chartSelect">
             <option value="forecast">Forecast vs Real</option>
             <option value="desviacion">Desviaciones</option>
@@ -34,65 +69,101 @@
 
     <!-- GRÁFICOS (solo uno visible a la vez) -->
     <div id="forecastCard" class="chart-card">
-        <canvas id="forecastChart" height="120"></canvas>
+        <h3 class="chart-title">Forecast vs Demanda Real</h3>
+        <canvas id="forecastChart" height="80"></canvas>
     </div>
 
     <div id="desviacionCard" class="chart-card hidden">
-        <canvas id="desviacionChart" height="120"></canvas>
+        <h3 class="chart-title">Desviaciones Porcentuales</h3>
+        <canvas id="desviacionChart" height="80"></canvas>
     </div>
 
     <div id="costosCard" class="chart-card hidden">
-        <canvas id="costosChart" height="120"></canvas>
+        <h3 class="chart-title">Costos por Producto</h3>
+        <canvas id="costosChart" height="80"></canvas>
     </div>
 
     <div id="proveedorCard" class="chart-card hidden">
-        <canvas id="proveedorChart" height="120"></canvas>
+        <h3 class="chart-title">Cumplimiento de Proveedores</h3>
+        <canvas id="proveedorChart" height="80"></canvas>
     </div>
 
     <!-- CUADRO ÚNICO CON CARRUSEL DE INSIGHTS -->
     <div id="insightsCard" class="info-card insights-card">
-        <div class="insights-inner">
-            
-            <!-- Slide 1: Alertas -->
-            <div class="insight-slide">
-                <h3>Alertas del forecast</h3>
-                <p id="alertText">Cargando alertas...</p>
+        <div class="carousel-header">
+            <h3>💡 Insights Automáticos</h3>
+            <div class="carousel-controls">
+                <button class="carousel-btn" id="prevBtn">‹</button>
+                <div class="carousel-dots" id="carouselDots"></div>
+                <button class="carousel-btn" id="nextBtn">›</button>
             </div>
+        </div>
+        
+        <div class="insights-wrapper">
+            <div class="insights-inner">
+                
+                <!-- Slide 1: Alertas -->
+                <div class="insight-slide">
+                    <div class="insight-header">🚨 Alertas del forecast</div>
+                    <div class="insight-content collapsed" id="alertContent">
+                        <p id="alertText">Cargando alertas...</p>
+                    </div>
+                    <button class="show-more-btn" id="alertShowMore">Mostrar más ▼</button>
+                </div>
 
-            <!-- Slide 2: Causa probable -->
-            <div class="insight-slide">
-                <h3>Causa probable</h3>
-                <p id="causaText">Analizando posibles causas...</p>
+                <!-- Slide 2: Causa probable -->
+                <div class="insight-slide">
+                    <div class="insight-header">🔍 Causa probable</div>
+                    <div class="insight-content collapsed" id="causaContent">
+                        <p id="causaText">Analizando posibles causas...</p>
+                    </div>
+                    <button class="show-more-btn" id="causaShowMore">Mostrar más ▼</button>
+                </div>
+
+                <!-- Slide 3: Recomendación -->
+                <div class="insight-slide">
+                    <div class="insight-header">💡 Recomendación automática</div>
+                    <div class="insight-content collapsed" id="recomendacionContent">
+                        <p id="recomendacionText">Calculando recomendación...</p>
+                    </div>
+                    <button class="show-more-btn" id="recomendacionShowMore">Mostrar más ▼</button>
+                </div>
+
+                <!-- Slide 4: Ranking y costo -->
+                <div class="insight-slide">
+                    <div class="insight-header">🏆 Ranking y costo estimado</div>
+                    <div class="insight-content collapsed" id="rankingContent">
+                        <p><strong>Productos con mayor costo:</strong></p>
+                        <ul id="rankingList"></ul>
+                        <p id="costoText"></p>
+                    </div>
+                    <button class="show-more-btn" id="rankingShowMore">Mostrar más ▼</button>
+                </div>
+
             </div>
-
-            <!-- Slide 3: Recomendación -->
-            <div class="insight-slide">
-                <h3>Recomendación automática</h3>
-                <p id="recomendacionText">Calculando recomendación...</p>
-            </div>
-
-            <!-- Slide 4: Ranking y costo -->
-            <div class="insight-slide">
-                <h3>Ranking y costo estimado</h3>
-                <p><strong>Productos con mayor costo:</strong></p>
-                <ul id="rankingList"></ul>
-                <p id="costoText"></p>
-            </div>
-
         </div>
     </div>
 
     <!-- PANEL DE SIMULADOR (separado del carrusel) -->
     <div id="simuladorCard" class="info-card">
-        <h3>Simulador de ajuste de forecast</h3>
-        <p>Ajuste actual: <span id="ajusteValor">0%</span></p>
-        <input type="range" id="ajusteSlider" min="-30" max="30" value="0">
-        <p class="simu-nota">Mueve el deslizador para ver cómo cambiaría el forecast ajustado.</p>
+        <h3>🎮 Simulador de ajuste de forecast</h3>
+        <div class="simulator-content">
+            <div class="slider-container">
+                <label>Ajuste actual: <span id="ajusteValor" class="ajuste-value">0%</span></label>
+                <input type="range" id="ajusteSlider" min="-30" max="30" value="0">
+                <div class="slider-labels">
+                    <span>-30%</span>
+                    <span>0%</span>
+                    <span>+30%</span>
+                </div>
+            </div>
+            <p class="simu-nota">💡 Mueve el deslizador para ver cómo cambiaría el forecast ajustado en tiempo real.</p>
+        </div>
     </div>
 
     <!-- SELECTOR DE TABLAS (SOLO PARA LAS TABLAS) -->
     <div class="table-selector">
-        <label for="tableSelect">Seleccionar tabla:</label>
+        <label for="tableSelect">📋 Seleccionar tabla:</label>
         <select id="tableSelect">
             <option value="tablaComparacion">Comparación de demanda</option>
             <option value="tablaProveedores">Pedidos por proveedor</option>
@@ -100,11 +171,11 @@
         </select>
     </div>
 
-    <!-- TABLA 1: Comparación Forecast vs Real (tu tabla original) -->
+    <!-- TABLA 1: Comparación Forecast vs Real -->
     <table id="tablaComparacion" class="forecast-table">
         <thead>
             <tr>
-                <th>Mes</th>
+                <th>Período</th>
                 <th>Esperado</th>
                 <th>Demandado</th>
                 <th>En Inventario</th>
@@ -113,24 +184,24 @@
         </thead>
         <tbody>
             <tr>
-                <td>Mes actual</td>
+                <td><strong>Mes actual</strong></td>
                 <td>120</td>
                 <td>80</td>
                 <td><span class="badge red">Bajo</span></td>
                 <td>100</td>
             </tr>
             <tr>
-                <td>Week 2</td>
+                <td><strong>Week 2</strong></td>
                 <td>90</td>
                 <td>30</td>
                 <td><span class="badge yellow">Medio</span></td>
                 <td>60</td>
             </tr>
             <tr>
-                <td>Week 3</td>
+                <td><strong>Week 3</strong></td>
                 <td>60</td>
                 <td>20</td>
-                <td><span class="badge green">Optimo</span></td>
+                <td><span class="badge green">Óptimo</span></td>
                 <td>40</td>
             </tr>
         </tbody>
@@ -149,21 +220,21 @@
         </thead>
         <tbody>
             <tr>
-                <td>TransDiesel Chile</td>
+                <td><strong>TransDiesel Chile</strong></td>
                 <td>150</td>
                 <td>140</td>
                 <td>2 días</td>
                 <td><span class="badge yellow">93%</span></td>
             </tr>
             <tr>
-                <td>MaqParts S.A.</td>
+                <td><strong>MaqParts S.A.</strong></td>
                 <td>200</td>
                 <td>200</td>
                 <td>0 días</td>
                 <td><span class="badge green">100%</span></td>
             </tr>
             <tr>
-                <td>Repuestos del Sur Ltda.</td>
+                <td><strong>Repuestos del Sur Ltda.</strong></td>
                 <td>90</td>
                 <td>70</td>
                 <td>4 días</td>
@@ -279,7 +350,7 @@
     <!-- LINK AL SITIO OFICIAL -->
     <div class="footer-link">
         <a href="https://www.buseshualpen.cl/" target="_blank">
-            Sitio oficial de Buses Hualpén
+            🌐 Sitio oficial de Buses Hualpén
         </a>
     </div>
 
