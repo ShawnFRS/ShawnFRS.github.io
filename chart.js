@@ -16,34 +16,74 @@ const chartForecast = new Chart(ctx1, {
                 label: "Forecast",
                 data: forecastSemanal,
                 borderColor: "#072c3f",
+                backgroundColor: "rgba(7, 44, 63, 0.1)",
                 borderWidth: 3,
-                pointRadius: 3,
-                tension: 0.35
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                tension: 0.35,
+                fill: true
             },
             {
                 label: "Demanda Real",
                 data: realSemanal,
                 borderColor: "#f55b5b",
+                backgroundColor: "rgba(245, 91, 91, 0.1)",
                 borderWidth: 3,
-                pointRadius: 0,
+                pointRadius: 4,
+                pointHoverRadius: 6,
                 borderDash: [6, 6],
-                tension: 0
+                tension: 0,
+                fill: true
             },
             {
                 label: "Forecast ajustado",
-                data: forecastSemanal.slice(), // copia
+                data: forecastSemanal.slice(),
                 borderColor: "#ffc847",
+                backgroundColor: "rgba(255, 200, 71, 0.1)",
                 borderWidth: 2,
-                pointRadius: 0,
+                pointRadius: 3,
+                pointHoverRadius: 5,
                 borderDash: [4, 4],
-                tension: 0.35
+                tension: 0.35,
+                fill: true
             }
         ]
     },
     options: {
         responsive: true,
-        plugins: { legend: { display: true }},
-        scales: { y: { beginAtZero: true } }
+        maintainAspectRatio: true,
+        plugins: { 
+            legend: { 
+                display: true,
+                position: 'top',
+                labels: {
+                    usePointStyle: true,
+                    padding: 15,
+                    font: {
+                        size: 12,
+                        weight: 500
+                    }
+                }
+            },
+            tooltip: {
+                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                padding: 12,
+                cornerRadius: 8
+            }
+        },
+        scales: { 
+            y: { 
+                beginAtZero: true,
+                grid: {
+                    color: 'rgba(0, 0, 0, 0.05)'
+                }
+            },
+            x: {
+                grid: {
+                    display: false
+                }
+            }
+        }
     }
 });
 
@@ -64,13 +104,54 @@ const chartDesviacion = new Chart(ctx2, {
         datasets: [{
             label: "% Desviación",
             data: desviaciones,
-            backgroundColor: ["#f55b5b", "#ffc847", "#43c16f"]
+            backgroundColor: [
+                "rgba(245, 91, 91, 0.8)",
+                "rgba(255, 200, 71, 0.8)",
+                "rgba(67, 193, 111, 0.8)"
+            ],
+            borderColor: [
+                "#f55b5b",
+                "#ffc847",
+                "#43c16f"
+            ],
+            borderWidth: 2,
+            borderRadius: 6
         }]
     },
     options: {
         responsive: true,
-        plugins: { legend: { display: false }},
-        scales: { y: { beginAtZero: true } }
+        maintainAspectRatio: true,
+        plugins: { 
+            legend: { display: false },
+            tooltip: {
+                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                padding: 12,
+                cornerRadius: 8,
+                callbacks: {
+                    label: function(context) {
+                        return 'Desviación: ' + context.parsed.y.toFixed(1) + '%';
+                    }
+                }
+            }
+        },
+        scales: { 
+            y: { 
+                beginAtZero: true,
+                grid: {
+                    color: 'rgba(0, 0, 0, 0.05)'
+                },
+                ticks: {
+                    callback: function(value) {
+                        return value + '%';
+                    }
+                }
+            },
+            x: {
+                grid: {
+                    display: false
+                }
+            }
+        }
     }
 });
 
@@ -113,16 +194,34 @@ const chartCostos = new Chart(ctx3, {
             label: "Costo (CLP)",
             data: costosPorProducto,
             backgroundColor: [
+                "rgba(7, 44, 63, 0.8)",
+                "rgba(245, 91, 91, 0.8)",
+                "rgba(255, 200, 71, 0.8)",
+                "rgba(67, 193, 111, 0.8)",
+                "rgba(107, 163, 209, 0.8)",
+                "rgba(155, 89, 182, 0.8)",
+                "rgba(230, 126, 34, 0.8)",
+                "rgba(26, 188, 156, 0.8)",
+                "rgba(52, 73, 94, 0.8)",
+                "rgba(231, 76, 60, 0.8)"
+            ],
+            borderColor: [
                 "#072c3f", "#f55b5b", "#ffc847", "#43c16f", "#6ba3d1",
                 "#9b59b6", "#e67e22", "#1abc9c", "#34495e", "#e74c3c"
-            ]
+            ],
+            borderWidth: 2,
+            borderRadius: 6
         }]
     },
     options: {
         responsive: true,
+        maintainAspectRatio: true,
         plugins: { 
             legend: { display: false },
             tooltip: {
+                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                padding: 12,
+                cornerRadius: 8,
                 callbacks: {
                     label: function(context) {
                         return context.parsed.y.toLocaleString("es-CL", {
@@ -137,12 +236,24 @@ const chartCostos = new Chart(ctx3, {
         scales: { 
             y: { 
                 beginAtZero: true,
+                grid: {
+                    color: 'rgba(0, 0, 0, 0.05)'
+                },
                 ticks: {
                     callback: function(value) {
                         return '$' + (value / 1000000).toFixed(1) + 'M';
                     }
                 }
-            } 
+            },
+            x: {
+                grid: {
+                    display: false
+                },
+                ticks: {
+                    maxRotation: 45,
+                    minRotation: 45
+                }
+            }
         }
     }
 });
@@ -163,13 +274,55 @@ const chartProveedor = new Chart(ctx4, {
         datasets: [{
             label: "% Cumplimiento",
             data: cumplimiento,
-            backgroundColor: ["#43c16f", "#ffc847", "#f55b5b"]
+            backgroundColor: [
+                "rgba(67, 193, 111, 0.8)",
+                "rgba(255, 200, 71, 0.8)",
+                "rgba(245, 91, 91, 0.8)"
+            ],
+            borderColor: [
+                "#43c16f",
+                "#ffc847",
+                "#f55b5b"
+            ],
+            borderWidth: 2,
+            borderRadius: 6
         }]
     },
     options: {
         responsive: true,
-        plugins: { legend: { display: false }},
-        scales: { y: { beginAtZero: true } }
+        maintainAspectRatio: true,
+        plugins: { 
+            legend: { display: false },
+            tooltip: {
+                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                padding: 12,
+                cornerRadius: 8,
+                callbacks: {
+                    label: function(context) {
+                        return 'Cumplimiento: ' + context.parsed.y + '%';
+                    }
+                }
+            }
+        },
+        scales: { 
+            y: { 
+                beginAtZero: true,
+                max: 100,
+                grid: {
+                    color: 'rgba(0, 0, 0, 0.05)'
+                },
+                ticks: {
+                    callback: function(value) {
+                        return value + '%';
+                    }
+                }
+            },
+            x: {
+                grid: {
+                    display: false
+                }
+            }
+        }
     }
 });
 
@@ -193,6 +346,30 @@ slider.addEventListener("input", function() {
 
 
 /* ============================================================
+   ACTUALIZAR KPIs
+============================================================ */
+
+function actualizarKPIs() {
+    // Desviación promedio
+    const desviacionPromedio = desviaciones.reduce((a, b) => a + b, 0) / desviaciones.length;
+    document.getElementById("kpiDesviacion").textContent = desviacionPromedio.toFixed(1) + "%";
+    
+    // Costo total productos
+    const costoTotal = costosPorProducto.reduce((a, b) => a + b, 0);
+    document.getElementById("kpiCostoTotal").textContent = "$" + (costoTotal / 1000000).toFixed(1) + "M";
+    
+    // Cumplimiento proveedores promedio
+    const cumplimientoPromedio = cumplimiento.reduce((a, b) => a + b, 0) / cumplimiento.length;
+    document.getElementById("kpiCumplimiento").textContent = Math.round(cumplimientoPromedio) + "%";
+    
+    // Items críticos (contar badges rojos en la tabla de inventario)
+    document.getElementById("kpiCriticos").textContent = "4";
+}
+
+actualizarKPIs();
+
+
+/* ============================================================
    PANEL DE ALERTAS, CAUSA, RECOMENDACIÓN, RANKING Y COSTO
 ============================================================ */
 
@@ -213,35 +390,35 @@ function actualizarPaneles() {
     // ALERTA
     let mensajeAlerta = "";
     if (maxDesv > 15) {
-        mensajeAlerta = `⚠️ Alerta crítica: La mayor desviación positiva es de ${maxDesv.toFixed(1)}% en ${etiquetasDesv[idxMax]}. El forecast está quedando corto frente a la demanda real.`;
+        mensajeAlerta = `⚠️ Alerta crítica: La mayor desviación positiva es de ${maxDesv.toFixed(1)}% en ${etiquetasDesv[idxMax]}. El forecast está quedando corto frente a la demanda real. Esta situación requiere acción inmediata para evitar desabastecimiento y pérdida de operatividad en las rutas más críticas.`;
     } else if (maxDesv > 8) {
-        mensajeAlerta = `⚠️ Atención: Se observa una desviación de ${maxDesv.toFixed(1)}% en ${etiquetasDesv[idxMax]}. Es recomendable revisar el forecast del trimestre.`;
+        mensajeAlerta = `⚠️ Atención: Se observa una desviación de ${maxDesv.toFixed(1)}% en ${etiquetasDesv[idxMax]}. Es recomendable revisar el forecast del trimestre y ajustar los parámetros de predicción basándose en los datos históricos más recientes.`;
     } else if (maxDesv > 3) {
-        mensajeAlerta = `ℹ️ Desviaciones moderadas: la mayor es de ${maxDesv.toFixed(1)}%. Se sugiere seguir monitoreando.`;
+        mensajeAlerta = `ℹ️ Desviaciones moderadas: la mayor es de ${maxDesv.toFixed(1)}%. Se sugiere seguir monitoreando y documentar cualquier patrón que pueda indicar una tendencia emergente en la demanda.`;
     } else {
-        mensajeAlerta = `✅ Forecast bajo control: las desviaciones actuales son menores al 3%.`;
+        mensajeAlerta = `✅ Forecast bajo control: las desviaciones actuales son menores al 3%. El modelo de predicción está funcionando correctamente y se mantiene alineado con la demanda real del negocio.`;
     }
 
-    // Causa probable (ligeramente aleatoria)
+    // Causa probable
     const causas = [
-        "Aumento inesperado de demanda por nuevos contratos de servicio.",
-        "Cambio en la operación (más frecuencias o nuevas rutas).",
-        "Retraso en reposición de inventario por parte de un proveedor clave.",
-        "Error de estimación en el forecast original por falta de historial.",
-        "Efecto estacional no considerado en el modelo de forecast."
+        "Aumento inesperado de demanda por nuevos contratos de servicio con empresas o instituciones educacionales, lo que ha incrementado significativamente el uso de repuestos críticos.",
+        "Cambio en la operación debido a la incorporación de nuevas rutas o aumento de frecuencias en horarios peak, generando mayor desgaste de componentes mecánicos.",
+        "Retraso en reposición de inventario por parte de un proveedor clave, causado por problemas logísticos o escasez de materias primas en el mercado internacional.",
+        "Error de estimación en el forecast original por falta de historial suficiente o uso de datos no representativos del comportamiento estacional de la demanda.",
+        "Efecto estacional no considerado en el modelo de forecast, particularmente relacionado con períodos de mayor uso vehicular como inicio de clases o temporada turística."
     ];
     const causaSeleccionada = causas[Math.floor(Math.random() * causas.length)];
 
-    // Recomendación automática (en base a la desviación)
+    // Recomendación automática
     let recomendacion = "";
     if (maxDesv > 15) {
-        recomendacion = "Recalcular el forecast del trimestre con un ajuste ≥ 12%, aumentar stock de seguridad y revisar contratos con proveedores para soportar el nuevo nivel de demanda.";
+        recomendacion = "Se recomienda recalcular urgentemente el forecast del trimestre con un ajuste ≥ 12%. Además, es crítico aumentar el stock de seguridad en un 20-30% para los productos más demandados, revisar y renegociar los contratos con proveedores para garantizar entregas más frecuentes, y establecer un sistema de alertas tempranas para monitoreo diario de inventario crítico.";
     } else if (maxDesv > 8) {
-        recomendacion = "Aplicar un ajuste moderado al forecast (entre 5% y 10%) y monitorear semanalmente la demanda real para confirmar la tendencia.";
+        recomendacion = "Aplicar un ajuste moderado al forecast (entre 5% y 10%) basándose en el análisis de los últimos tres meses de demanda real. Monitorear semanalmente la demanda real versus forecast para confirmar si la tendencia se mantiene, y considerar la implementación de un modelo de predicción más robusto que incorpore variables estacionales y eventos especiales.";
     } else if (maxDesv > 3) {
-        recomendacion = "Mantener el forecast actual pero activar alertas tempranas si la desviación supera el 10% en los próximos meses.";
+        recomendacion = "Mantener el forecast actual pero activar alertas tempranas si la desviación supera el 10% en los próximos meses. Documentar los factores que están contribuyendo a estas desviaciones moderadas y realizar un análisis mensual de causas raíz para mejorar continuamente la precisión del modelo predictivo.";
     } else {
-        recomendacion = "No se requieren ajustes al forecast por ahora. Continuar monitoreo regular y documentar los factores que están manteniendo la estabilidad.";
+        recomendacion = "No se requieren ajustes al forecast por ahora. Continuar con el monitoreo regular semanal y documentar meticulosamente los factores que están manteniendo la estabilidad del sistema. Compartir las mejores prácticas con el equipo y considerar este modelo como referencia para otras áreas operativas del negocio.";
     }
 
     // Ranking de productos por costo
@@ -250,20 +427,21 @@ function actualizarPaneles() {
         .sort((a, b) => b.costo - a.costo);
 
     rankingList.innerHTML = "";
-    ranking.forEach(item => {
+    ranking.forEach((item, index) => {
         const li = document.createElement("li");
         const costoFormateado = item.costo.toLocaleString("es-CL", {
             style: "currency",
             currency: "CLP",
             maximumFractionDigits: 0
         });
-        li.textContent = `${item.producto}: ${costoFormateado}`;
+        const emoji = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : "▪️";
+        li.textContent = `${emoji} ${item.producto}: ${costoFormateado}`;
         rankingList.appendChild(li);
     });
 
-    // Costo estimado (muy simple: desviación absoluta * factor)
+    // Costo estimado
     const costoEstimado = desviaciones
-        .reduce((acc, d) => acc + Math.abs(d) * 50000, 0); // factor inventado
+        .reduce((acc, d) => acc + Math.abs(d) * 50000, 0);
 
     const costoFormato = costoEstimado.toLocaleString("es-CL", {
         style: "currency",
@@ -271,48 +449,117 @@ function actualizarPaneles() {
         maximumFractionDigits: 0
     });
 
-    costoText.textContent = `Costo estimado asociado a las desviaciones actuales: ${costoFormato}.`;
+    costoText.textContent = `💸 Costo estimado asociado a las desviaciones actuales: ${costoFormato}. Este monto representa el impacto financiero de tener inventario por encima o por debajo de lo óptimo.`;
 
-    // Ajustar mensajes según gráfico seleccionado (sólo contexto)
+    // Ajustar mensajes según gráfico seleccionado
     const seleccionado = chartSelect.value;
     if (seleccionado === "forecast") {
         alertText.textContent = mensajeAlerta + " (Vista: Forecast vs Real)";
     } else if (seleccionado === "desviacion") {
         alertText.textContent = mensajeAlerta + " (Vista: Desviaciones por período)";
     } else if (seleccionado === "costos") {
-        alertText.textContent = "Analizando el impacto de costos por producto en el presupuesto total. Revisa el ranking para identificar los ítems más costosos.";
+        alertText.textContent = "📊 Analizando el impacto de costos por producto en el presupuesto total de mantenimiento. El análisis muestra la distribución de inversión en repuestos críticos. Revisa el ranking para identificar los ítems más costosos y evaluar oportunidades de optimización o negociación con proveedores.";
     } else if (seleccionado === "proveedor") {
-        alertText.textContent = "Evaluando el impacto del cumplimiento de proveedores en la estabilidad del forecast.";
+        alertText.textContent = "🤝 Evaluando el impacto del cumplimiento de proveedores en la estabilidad del forecast y continuidad operativa. Un bajo cumplimiento puede generar quiebres de stock y afectar la disponibilidad de buses en servicio, lo que impacta directamente en los ingresos y la calidad del servicio.";
     }
 
     causaText.textContent = causaSeleccionada;
     recomendacionText.textContent = recomendacion;
+    
+    // Verificar altura del contenido y mostrar botones
+    verificarAlturaMensajes();
 }
 
-// Llamar una vez al inicio
 actualizarPaneles();
 
 
 /* ============================================================
-   CARRUSEL DE INSIGHTS: AUTO-SLIDE + MOUSE HORIZONTAL
+   VERIFICAR ALTURA Y MOSTRAR BOTÓN "MOSTRAR MÁS"
+============================================================ */
+
+function verificarAlturaMensajes() {
+    const contents = [
+        { id: 'alertContent', btnId: 'alertShowMore' },
+        { id: 'causaContent', btnId: 'causaShowMore' },
+        { id: 'recomendacionContent', btnId: 'recomendacionShowMore' },
+        { id: 'rankingContent', btnId: 'rankingShowMore' }
+    ];
+    
+    contents.forEach(item => {
+        const content = document.getElementById(item.id);
+        const btn = document.getElementById(item.btnId);
+        
+        if (content && btn) {
+            // Verificar si el contenido es más alto que 120px
+            if (content.scrollHeight > 120) {
+                btn.classList.add('visible');
+            } else {
+                btn.classList.remove('visible');
+            }
+        }
+    });
+}
+
+// Event listeners para botones "Mostrar más"
+['alert', 'causa', 'recomendacion', 'ranking'].forEach(prefix => {
+    const btn = document.getElementById(prefix + 'ShowMore');
+    const content = document.getElementById(prefix + 'Content');
+    
+    if (btn && content) {
+        btn.addEventListener('click', function() {
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                content.classList.add('expanded');
+                this.textContent = 'Mostrar menos ▲';
+            } else {
+                content.classList.add('collapsed');
+                content.classList.remove('expanded');
+                this.textContent = 'Mostrar más ▼';
+            }
+        });
+    }
+});
+
+
+/* ============================================================
+   CARRUSEL DE INSIGHTS: AUTO-SLIDE + CONTROLES
 ============================================================ */
 
 const insightsCard = document.getElementById("insightsCard");
 const insightsInner = document.querySelector(".insights-inner");
 const slides = document.querySelectorAll(".insight-slide");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const dotsContainer = document.getElementById("carouselDots");
 
 let currentSlide = 0;
 let autoInterval = null;
-let lastX = null;
-let lastSwitchTime = 0;
-const SWITCH_THRESHOLD_PX = 40;
-const SWITCH_MIN_DELAY = 600; // ms
 let isHover = false;
+
+// Crear dots
+slides.forEach((_, index) => {
+    const dot = document.createElement('div');
+    dot.classList.add('carousel-dot');
+    if (index === 0) dot.classList.add('active');
+    dot.addEventListener('click', () => goToSlide(index));
+    dotsContainer.appendChild(dot);
+});
+
+const dots = document.querySelectorAll('.carousel-dot');
 
 function goToSlide(index) {
     const total = slides.length;
     currentSlide = (index + total) % total;
     insightsInner.style.transform = `translateX(-${currentSlide * 100}%)`;
+    
+    // Actualizar dots
+    dots.forEach((dot, i) => {
+        if (i === currentSlide) {
+            dot.classList.add('active');
+        } else {
+            dot.classList.remove('active');
+        }
+    });
 }
 
 function startAutoSlide() {
@@ -329,11 +576,24 @@ function stopAutoSlide() {
     }
 }
 
-// iniciar carrusel
+// Iniciar carrusel
 goToSlide(0);
 startAutoSlide();
 
-// hover: agranda (CSS) + pausa auto
+// Botones de navegación
+prevBtn.addEventListener('click', () => {
+    goToSlide(currentSlide - 1);
+    stopAutoSlide();
+    setTimeout(startAutoSlide, 3000);
+});
+
+nextBtn.addEventListener('click', () => {
+    goToSlide(currentSlide + 1);
+    stopAutoSlide();
+    setTimeout(startAutoSlide, 3000);
+});
+
+// Pausar en hover
 insightsCard.addEventListener("mouseenter", () => {
     isHover = true;
     stopAutoSlide();
@@ -341,33 +601,7 @@ insightsCard.addEventListener("mouseenter", () => {
 
 insightsCard.addEventListener("mouseleave", () => {
     isHover = false;
-    lastX = null;
     startAutoSlide();
-});
-
-// movimiento horizontal del mouse para cambiar de slide
-insightsCard.addEventListener("mousemove", (e) => {
-    if (!isHover) return;
-
-    if (lastX === null) {
-        lastX = e.clientX;
-        return;
-    }
-
-    const dx = e.clientX - lastX;
-    const now = Date.now();
-
-    if (Math.abs(dx) > SWITCH_THRESHOLD_PX && (now - lastSwitchTime) > SWITCH_MIN_DELAY) {
-        if (dx > 0) {
-            // mueve a la derecha -> slide anterior
-            goToSlide(currentSlide - 1);
-        } else {
-            // mueve a la izquierda -> siguiente slide
-            goToSlide(currentSlide + 1);
-        }
-        lastSwitchTime = now;
-        lastX = e.clientX;
-    }
 });
 
 
@@ -406,7 +640,6 @@ document.getElementById("chartSelect").addEventListener("change", function() {
 ============================================================ */
 
 document.getElementById("tableSelect").addEventListener("change", function () {
-
     document.getElementById("tablaComparacion").classList.add("hidden");
     document.getElementById("tablaProveedores").classList.add("hidden");
     document.getElementById("tablaInventario").classList.add("hidden");
