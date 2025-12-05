@@ -92,8 +92,8 @@ const chartForecast = new Chart(ctx1, {
    GRÁFICO 2: Desviación %
 ============================================================ */
 
-const esperadoMensual = [120, 90, 60];
-const realMensual     = [80, 30, 20];
+const esperadoMensual = [5,10,85,60,45,25,10,12,8,9,13,11];
+const realMensual     = [9,12,81,35,56,31,12,13,10,13,10,9];
 const desviaciones = realMensual.map((r,i)=>((r-esperadoMensual[i])/esperadoMensual[i])*100);
 
 const ctx2 = document.getElementById("desviacionChart");
