@@ -100,7 +100,7 @@ const ctx2 = document.getElementById("desviacionChart");
 const chartDesviacion = new Chart(ctx2, {
     type: "bar",
     data: {
-        labels: ["Mes actual", "Week 2", "Week 3"],
+        labels: ["Enero", "Febrero", "Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],
         datasets: [{
             label: "% Desviación",
             data: desviaciones,
