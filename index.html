@@ -68,21 +68,40 @@
     </div>
 
     <!-- GRÁFICOS (solo uno visible a la vez) -->
+    
+    <!-- GRÁFICO 1: Forecast vs Real -->
     <div id="forecastCard" class="chart-card">
-        <h3 class="chart-title">Forecast vs Demanda Real</h3>
+        <div class="chart-header">
+            <h3 class="chart-title">Forecast vs Demanda Real</h3>
+            <div class="period-selector">
+                <button class="period-btn" data-period="dia">📅 Día</button>
+                <button class="period-btn active" data-period="semana">📆 Semana</button>
+                <button class="period-btn" data-period="mes">🗓️ Mes</button>
+            </div>
+        </div>
         <canvas id="forecastChart" height="80"></canvas>
     </div>
 
+    <!-- GRÁFICO 2: Desviaciones -->
     <div id="desviacionCard" class="chart-card hidden">
-        <h3 class="chart-title">Desviaciones Porcentuales</h3>
+        <div class="chart-header">
+            <h3 class="chart-title">Desviaciones Porcentuales</h3>
+            <div class="period-selector">
+                <button class="period-btn-desv" data-period="dia">📅 Día</button>
+                <button class="period-btn-desv" data-period="semana">📆 Semana</button>
+                <button class="period-btn-desv active" data-period="mes">🗓️ Mes</button>
+            </div>
+        </div>
         <canvas id="desviacionChart" height="80"></canvas>
     </div>
 
+    <!-- GRÁFICO 3: Costos -->
     <div id="costosCard" class="chart-card hidden">
         <h3 class="chart-title">Costos por Producto</h3>
         <canvas id="costosChart" height="80"></canvas>
     </div>
 
+    <!-- GRÁFICO 4: Proveedores -->
     <div id="proveedorCard" class="chart-card hidden">
         <h3 class="chart-title">Cumplimiento de Proveedores</h3>
         <canvas id="proveedorChart" height="80"></canvas>
@@ -91,7 +110,7 @@
     <!-- CUADRO ÚNICO CON CARRUSEL DE INSIGHTS -->
     <div id="insightsCard" class="info-card insights-card">
         <div class="carousel-header">
-            <h3>💡 Analisis de del estado actual</h3>
+            <h3>💡 Análisis del estado actual</h3>
             <div class="carousel-controls">
                 <button class="carousel-btn" id="prevBtn">‹</button>
                 <div class="carousel-dots" id="carouselDots"></div>
@@ -204,56 +223,63 @@
                 <td><span class="badge green">Óptimo</span></td>
                 <td>40</td>
             </tr>
+            <tr>
                 <td><strong>Mes 9</strong></td>
                 <td>30</td>
                 <td>40</td>
                 <td><span class="badge red">Bajo</span></td>
                 <td>40</td>
-            </tr>                
+            </tr>
+            <tr>
                 <td><strong>Mes 8</strong></td>
                 <td>70</td>
                 <td>90</td>
                 <td><span class="badge red">Bajo</span></td>
                 <td>20</td>
-            </tr>                
+            </tr>
+            <tr>
                 <td><strong>Mes 7</strong></td>
                 <td>60</td>
                 <td>20</td>
                 <td><span class="badge green">Óptimo</span></td>
                 <td>40</td>
-            </tr>                
+            </tr>
+            <tr>
                 <td><strong>Mes 6</strong></td>
                 <td>25</td>
                 <td>20</td>
                 <td><span class="badge yellow">Medio</span></td>
                 <td>5</td>
-            </tr>                
+            </tr>
+            <tr>
                 <td><strong>Mes 5</strong></td>
                 <td>70</td>
                 <td>66</td>
                 <td><span class="badge green">Óptimo</span></td>
                 <td>4</td>
-            </tr>                
+            </tr>
+            <tr>
                 <td><strong>Mes 4</strong></td>
                 <td>60</td>
                 <td>20</td>
                 <td><span class="badge yellow">Medio</span></td>
                 <td>40</td>
-            </tr>                
+            </tr>
+            <tr>
                 <td><strong>Mes 3</strong></td>
                 <td>60</td>
                 <td>20</td>
                 <td><span class="badge yellow">Medio</span></td>
                 <td>40</td>
-            </tr>      
-            </tr>                
+            </tr>
+            <tr>
                 <td><strong>Mes 2</strong></td>
                 <td>45</td>
                 <td>60</td>
                 <td><span class="badge green">Óptimo</span></td>
                 <td>12</td>
             </tr>
-            </tr>                
+            <tr>
                 <td><strong>Mes 1</strong></td>
                 <td>60</td>
                 <td>20</td>
