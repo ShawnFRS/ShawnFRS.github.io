@@ -21,9 +21,7 @@
         <h1>Forecast</h1>
     </div>
 
-    <!-- ===================== -->
-    <!-- MENÚ DESPLEGABLE -->
-    <!-- ===================== -->
+    <!-- MENÚ DESPLEGABLE DE GRÁFICOS -->
     <div class="chart-selector">
         <label for="chartSelect">Seleccionar gráfico:</label>
         <select id="chartSelect">
@@ -34,9 +32,7 @@
         </select>
     </div>
 
-    <!-- ===================== -->
     <!-- GRÁFICOS (solo uno visible a la vez) -->
-    <!-- ===================== -->
     <div id="forecastCard" class="chart-card">
         <canvas id="forecastChart" height="120"></canvas>
     </div>
@@ -53,9 +49,41 @@
         <canvas id="proveedorChart" height="120"></canvas>
     </div>
 
-    <!-- ===================== -->
-    <!-- TABLA DETALLE -->
-    <!-- ===================== -->
+    <!-- PANEL DE ALERTAS -->
+    <div id="alertCard" class="info-card">
+        <h3>Alertas del forecast</h3>
+        <p id="alertText">Cargando alertas...</p>
+    </div>
+
+    <!-- PANEL DE CAUSAS PROBABLES -->
+    <div id="causaCard" class="info-card">
+        <h3>Causa probable</h3>
+        <p id="causaText">Analizando posibles causas...</p>
+    </div>
+
+    <!-- PANEL DE RECOMENDACIÓN -->
+    <div id="recomendacionCard" class="info-card">
+        <h3>Recomendación automática</h3>
+        <p id="recomendacionText">Calculando recomendación...</p>
+    </div>
+
+    <!-- PANEL DE SIMULADOR -->
+    <div id="simuladorCard" class="info-card">
+        <h3>Simulador de ajuste de forecast</h3>
+        <p>Ajuste actual: <span id="ajusteValor">0%</span></p>
+        <input type="range" id="ajusteSlider" min="-30" max="30" value="0">
+        <p class="simu-nota">Mueve el deslizador para ver cómo cambiaría el forecast ajustado.</p>
+    </div>
+
+    <!-- PANEL DE RANKING Y COSTO -->
+    <div id="rankingCard" class="info-card">
+        <h3>Ranking de errores y costo estimado</h3>
+        <p><strong>Productos con mayor error:</strong></p>
+        <ul id="rankingList"></ul>
+        <p id="costoText"></p>
+    </div>
+
+    <!-- TABLA DETALLE (se mantiene igual) -->
     <table class="forecast-table">
         <thead>
             <tr>
@@ -90,16 +118,21 @@
             </tr>
         </tbody>
     </table>
-<div class="footer-link">
-    <a href="https://www.buseshualpen.cl/" target="_blank">
-        Sitio oficial de Buses Hualpén
-    </a>
+
+    <!-- LINK AL SITIO OFICIAL -->
+    <div class="footer-link">
+        <a href="https://www.buseshualpen.cl/" target="_blank">
+            Sitio oficial de Buses Hualpén
+        </a>
+    </div>
+
 </div>
 
 <script src="chart.js"></script>
 
 </body>
 </html>
+
 
 
 
