@@ -76,23 +76,73 @@ const chartDesviacion = new Chart(ctx2, {
 
 
 /* ============================================================
-   GRÁFICO 3: TORTA – Productos con mayor error
+   GRÁFICO 3: Costos por pieza (barras)
 ============================================================ */
 
-const productos = ["Producto A", "Producto B", "Producto C", "Producto D"];
-const errorProductos = [40, 30, 20, 10];
+const piezas = [
+    "Filtros",
+    "Pastillas freno",
+    "Discos freno",
+    "Neumáticos",
+    "Batería",
+    "Alternador",
+    "Motor arranque",
+    "Correas",
+    "Amortiguadores",
+    "Bolsas de aire",
+    "Mangueras",
+    "Compresor aire",
+    "Bomba combustible",
+    "Inyectores",
+    "Puertas automáticas"
+];
+
+// costos estimados (miles de CLP, por ejemplo)
+const costosPiezas = [
+    80, 60, 120, 300, 150,
+    220, 250, 90, 200, 260,
+    70, 280, 180, 140, 320
+];
 
 const ctx3 = document.getElementById("tortaChart");
-const chartTorta = new Chart(ctx3, {
-    type: "pie",
+const chartCostos = new Chart(ctx3, {
+    type: "bar",
     data: {
-        labels: productos,
+        labels: piezas,
         datasets: [{
-            data: errorProductos,
-            backgroundColor: ["#072c3f", "#f55b5b", "#ffc847", "#43c16f"]
+            label: "Costo estimado por pieza",
+            data: costosPiezas,
+            backgroundColor: piezas.map((_, i) => {
+                const colors = ["#072c3f", "#f55b5b", "#ffc847", "#43c16f"];
+                return colors[i % colors.length];
+            })
         }]
     },
-    options: { responsive: true }
+    options: {
+        responsive: true,
+        plugins: { 
+            legend: { display: false },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        const value = context.parsed.y;
+                        return `Costo: ${value.toLocaleString("es-CL")} mil CLP`;
+                    }
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: {
+                    maxRotation: 60,
+                    minRotation: 40
+                }
+            },
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
 });
 
 
@@ -154,7 +204,6 @@ function actualizarPaneles() {
 
     // Métricas base
     const maxDesv = Math.max(...desviaciones);
-    const minDesv = Math.min(...desviaciones);
     const idxMax = desviaciones.indexOf(maxDesv);
     const etiquetasDesv = ["Mes actual", "Week 2", "Week 3"];
 
@@ -192,19 +241,19 @@ function actualizarPaneles() {
         recomendacion = "No se requieren ajustes al forecast por ahora. Continuar monitoreo regular y documentar los factores que están manteniendo la estabilidad.";
     }
 
-    // Ranking de productos por error (usando el gráfico de torta)
-    const ranking = productos
-        .map((p, i) => ({ producto: p, error: errorProductos[i] }))
-        .sort((a, b) => b.error - a.error);
+    // Ranking de piezas por costo (usando gráfico de costos)
+    const ranking = piezas
+        .map((p, i) => ({ pieza: p, costo: costosPiezas[i] }))
+        .sort((a, b) => b.costo - a.costo);
 
     rankingList.innerHTML = "";
     ranking.forEach(item => {
         const li = document.createElement("li");
-        li.textContent = `${item.producto}: ${item.error}% del error total de forecast`;
+        li.textContent = `${item.pieza}: costo relativo ${item.costo} (mil CLP)`;
         rankingList.appendChild(li);
     });
 
-    // Costo estimado (muy simple: desviación absoluta * factor)
+    // Costo estimado asociado a desviaciones (igual que antes, simplificado)
     const costoEstimado = desviaciones
         .reduce((acc, d) => acc + Math.abs(d) * 50000, 0); // factor inventado
 
@@ -223,7 +272,7 @@ function actualizarPaneles() {
     } else if (seleccionado === "desviacion") {
         alertText.textContent = mensajeAlerta + " (Vista: Desviaciones por período)";
     } else if (seleccionado === "torta") {
-        alertText.textContent = "Analizando la concentración del error por producto. Revisa el ranking para identificar qué ítems rompen más el forecast.";
+        alertText.textContent = "Analizando el costo estimado por pieza. Revisa el ranking para identificar qué componentes son más costosos.";
     } else if (seleccionado === "proveedor") {
         alertText.textContent = "Evaluando el impacto del cumplimiento de proveedores en la estabilidad del forecast.";
     }
@@ -248,8 +297,8 @@ let currentSlide = 0;
 let autoInterval = null;
 let lastX = null;
 let lastSwitchTime = 0;
-const SWITCH_THRESHOLD_PX = 40;
-const SWITCH_MIN_DELAY = 600; // ms
+const SWITCH_THRESHOLD_PX = 120;   // más distancia para cambiar
+const SWITCH_MIN_DELAY = 1200;     // más tiempo entre cambios
 let isHover = false;
 
 function goToSlide(index) {
@@ -276,7 +325,7 @@ function stopAutoSlide() {
 goToSlide(0);
 startAutoSlide();
 
-// hover: agranda (CSS) + pausa auto
+// hover: pausa auto
 insightsCard.addEventListener("mouseenter", () => {
     isHover = true;
     stopAutoSlide();
