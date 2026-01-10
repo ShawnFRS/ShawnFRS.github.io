@@ -76,23 +76,75 @@ const chartDesviacion = new Chart(ctx2, {
 
 
 /* ============================================================
-   GRÁFICO 3: TORTA – Productos con mayor error
+   GRÁFICO 3: HISTOGRAMA – Costos por producto
 ============================================================ */
 
-const productos = ["Producto A", "Producto B", "Producto C", "Producto D"];
-const errorProductos = [40, 30, 20, 10];
+const productosConCosto = [
+    "Neumáticos", 
+    "Pastillas de freno", 
+    "Filtros (aire/aceite)", 
+    "Batería", 
+    "Discos de freno",
+    "Amortiguadores",
+    "Motor de arranque",
+    "Alternador",
+    "Bolsas de aire",
+    "Compresor de aire"
+];
+const costosPorProducto = [
+    2850000,  // Neumáticos (set completo)
+    780000,   // Pastillas de freno
+    450000,   // Filtros
+    520000,   // Batería
+    1200000,  // Discos de freno
+    950000,   // Amortiguadores
+    680000,   // Motor de arranque
+    850000,   // Alternador
+    1450000,  // Bolsas de aire
+    2100000   // Compresor de aire
+];
 
-const ctx3 = document.getElementById("tortaChart");
-const chartTorta = new Chart(ctx3, {
-    type: "pie",
+const ctx3 = document.getElementById("costosChart");
+const chartCostos = new Chart(ctx3, {
+    type: "bar",
     data: {
-        labels: productos,
+        labels: productosConCosto,
         datasets: [{
-            data: errorProductos,
-            backgroundColor: ["#072c3f", "#f55b5b", "#ffc847", "#43c16f"]
+            label: "Costo (CLP)",
+            data: costosPorProducto,
+            backgroundColor: [
+                "#072c3f", "#f55b5b", "#ffc847", "#43c16f", "#6ba3d1",
+                "#9b59b6", "#e67e22", "#1abc9c", "#34495e", "#e74c3c"
+            ]
         }]
     },
-    options: { responsive: true }
+    options: {
+        responsive: true,
+        plugins: { 
+            legend: { display: false },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        return context.parsed.y.toLocaleString("es-CL", {
+                            style: "currency",
+                            currency: "CLP",
+                            maximumFractionDigits: 0
+                        });
+                    }
+                }
+            }
+        },
+        scales: { 
+            y: { 
+                beginAtZero: true,
+                ticks: {
+                    callback: function(value) {
+                        return '$' + (value / 1000000).toFixed(1) + 'M';
+                    }
+                }
+            } 
+        }
+    }
 });
 
 
@@ -192,15 +244,20 @@ function actualizarPaneles() {
         recomendacion = "No se requieren ajustes al forecast por ahora. Continuar monitoreo regular y documentar los factores que están manteniendo la estabilidad.";
     }
 
-    // Ranking de productos por error (usando el gráfico de torta)
-    const ranking = productos
-        .map((p, i) => ({ producto: p, error: errorProductos[i] }))
-        .sort((a, b) => b.error - a.error);
+    // Ranking de productos por costo
+    const ranking = productosConCosto
+        .map((p, i) => ({ producto: p, costo: costosPorProducto[i] }))
+        .sort((a, b) => b.costo - a.costo);
 
     rankingList.innerHTML = "";
     ranking.forEach(item => {
         const li = document.createElement("li");
-        li.textContent = `${item.producto}: ${item.error}% del error total de forecast`;
+        const costoFormateado = item.costo.toLocaleString("es-CL", {
+            style: "currency",
+            currency: "CLP",
+            maximumFractionDigits: 0
+        });
+        li.textContent = `${item.producto}: ${costoFormateado}`;
         rankingList.appendChild(li);
     });
 
@@ -222,8 +279,8 @@ function actualizarPaneles() {
         alertText.textContent = mensajeAlerta + " (Vista: Forecast vs Real)";
     } else if (seleccionado === "desviacion") {
         alertText.textContent = mensajeAlerta + " (Vista: Desviaciones por período)";
-    } else if (seleccionado === "torta") {
-        alertText.textContent = "Analizando la concentración del error por producto. Revisa el ranking para identificar qué ítems rompen más el forecast.";
+    } else if (seleccionado === "costos") {
+        alertText.textContent = "Analizando el impacto de costos por producto en el presupuesto total. Revisa el ranking para identificar los ítems más costosos.";
     } else if (seleccionado === "proveedor") {
         alertText.textContent = "Evaluando el impacto del cumplimiento de proveedores en la estabilidad del forecast.";
     }
@@ -322,7 +379,7 @@ document.getElementById("chartSelect").addEventListener("change", function() {
     // Oculta todos
     document.getElementById("forecastCard").classList.add("hidden");
     document.getElementById("desviacionCard").classList.add("hidden");
-    document.getElementById("tortaCard").classList.add("hidden");
+    document.getElementById("costosCard").classList.add("hidden");
     document.getElementById("proveedorCard").classList.add("hidden");
 
     // Muestra el seleccionado
@@ -332,8 +389,8 @@ document.getElementById("chartSelect").addEventListener("change", function() {
     if (this.value === "desviacion") {
         document.getElementById("desviacionCard").classList.remove("hidden");
     }
-    if (this.value === "torta") {
-        document.getElementById("tortaCard").classList.remove("hidden");
+    if (this.value === "costos") {
+        document.getElementById("costosCard").classList.remove("hidden");
     }
     if (this.value === "proveedor") {
         document.getElementById("proveedorCard").classList.remove("hidden");

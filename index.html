@@ -27,7 +27,7 @@
         <select id="chartSelect">
             <option value="forecast">Forecast vs Real</option>
             <option value="desviacion">Desviaciones</option>
-            <option value="torta">Errores por producto</option>
+            <option value="costos">Costos por producto</option>
             <option value="proveedor">Cumplimiento proveedor</option>
         </select>
     </div>
@@ -41,8 +41,8 @@
         <canvas id="desviacionChart" height="120"></canvas>
     </div>
 
-    <div id="tortaCard" class="chart-card hidden">
-        <canvas id="tortaChart" height="120"></canvas>
+    <div id="costosCard" class="chart-card hidden">
+        <canvas id="costosChart" height="120"></canvas>
     </div>
 
     <div id="proveedorCard" class="chart-card hidden">
@@ -74,7 +74,7 @@
             <!-- Slide 4: Ranking y costo -->
             <div class="insight-slide">
                 <h3>Ranking y costo estimado</h3>
-                <p><strong>Productos con mayor error:</strong></p>
+                <p><strong>Productos con mayor costo:</strong></p>
                 <ul id="rankingList"></ul>
                 <p id="costoText"></p>
             </div>
