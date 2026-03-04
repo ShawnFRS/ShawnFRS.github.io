@@ -49,25 +49,40 @@
         <canvas id="proveedorChart" height="120"></canvas>
     </div>
 
-    <!-- PANEL DE ALERTAS -->
-    <div id="alertCard" class="info-card">
-        <h3>Alertas del forecast</h3>
-        <p id="alertText">Cargando alertas...</p>
+    <!-- CUADRO ÚNICO CON CARRUSEL DE INSIGHTS -->
+    <div id="insightsCard" class="info-card insights-card">
+        <div class="insights-inner">
+            
+            <!-- Slide 1: Alertas -->
+            <div class="insight-slide">
+                <h3>Alertas del forecast</h3>
+                <p id="alertText">Cargando alertas...</p>
+            </div>
+
+            <!-- Slide 2: Causa probable -->
+            <div class="insight-slide">
+                <h3>Causa probable</h3>
+                <p id="causaText">Analizando posibles causas...</p>
+            </div>
+
+            <!-- Slide 3: Recomendación -->
+            <div class="insight-slide">
+                <h3>Recomendación automática</h3>
+                <p id="recomendacionText">Calculando recomendación...</p>
+            </div>
+
+            <!-- Slide 4: Ranking y costo -->
+            <div class="insight-slide">
+                <h3>Ranking y costo estimado</h3>
+                <p><strong>Productos con mayor error:</strong></p>
+                <ul id="rankingList"></ul>
+                <p id="costoText"></p>
+            </div>
+
+        </div>
     </div>
 
-    <!-- PANEL DE CAUSAS PROBABLES -->
-    <div id="causaCard" class="info-card">
-        <h3>Causa probable</h3>
-        <p id="causaText">Analizando posibles causas...</p>
-    </div>
-
-    <!-- PANEL DE RECOMENDACIÓN -->
-    <div id="recomendacionCard" class="info-card">
-        <h3>Recomendación automática</h3>
-        <p id="recomendacionText">Calculando recomendación...</p>
-    </div>
-
-    <!-- PANEL DE SIMULADOR -->
+    <!-- PANEL DE SIMULADOR (separado del carrusel) -->
     <div id="simuladorCard" class="info-card">
         <h3>Simulador de ajuste de forecast</h3>
         <p>Ajuste actual: <span id="ajusteValor">0%</span></p>
@@ -75,15 +90,7 @@
         <p class="simu-nota">Mueve el deslizador para ver cómo cambiaría el forecast ajustado.</p>
     </div>
 
-    <!-- PANEL DE RANKING Y COSTO -->
-    <div id="rankingCard" class="info-card">
-        <h3>Ranking de errores y costo estimado</h3>
-        <p><strong>Productos con mayor error:</strong></p>
-        <ul id="rankingList"></ul>
-        <p id="costoText"></p>
-    </div>
-
-    <!-- TABLA DETALLE (se mantiene igual) -->
+    <!-- TABLA DETALLE (igual que antes) -->
     <table class="forecast-table">
         <thead>
             <tr>
@@ -132,9 +139,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
