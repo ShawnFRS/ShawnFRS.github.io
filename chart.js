@@ -161,28 +161,34 @@ const chartDesviacion = new Chart(ctx2, {
 ============================================================ */
 
 const productosConCosto = [
-    "Neumáticos", 
-    "Pastillas de freno", 
-    "Filtros (aire/aceite)", 
-    "Batería", 
+    "Motor completo Sprinter", 
+    "Motor de arranque", 
+    "Parabrisas", 
+    "Caja de cambios", 
+    "Caja dirección",
+    "Calibre de freno",
     "Discos de freno",
     "Amortiguadores",
-    "Motor de arranque",
-    "Alternador",
-    "Bolsas de aire",
-    "Compresor de aire"
+    "Batería",
+    "Compresor aire acondicionado",
+    "Paquete de resoster",
+    "Pastillas de freno",
+    "Kit de filtros"
 ];
 const costosPorProducto = [
-    285000,  // Neumáticos (set completo)
-    780000,   // Pastillas de freno
-    450000,   // Filtros
-    520000,   // Batería
-    1200000,  // Discos de freno
-    950000,   // Amortiguadores
-    680000,   // Motor de arranque
-    850000,   // Alternador
-    145000,  // Bolsas de aire
-    2100000   // Compresor de aire
+    13000000,  // Motor completo Sprinter
+    1600000,   // Motor de arranque (Caja diferencial)
+    780000,    // Parabrisas
+    600000,    // Caja de cambios
+    650000,    // Caja dirección
+    440000,    // Calibre de freno
+    350000,    // Discos de freno
+    250000,    // Amortiguadores
+    150000,    // Batería
+    1100000,   // Compresor aire acondicionado
+    1100000,   // Paquete de resoster
+    100000,    // Pastillas de freno
+    89000      // Kit de filtros
 ];
 
 const ctx3 = document.getElementById("costosChart");
@@ -203,11 +209,15 @@ const chartCostos = new Chart(ctx3, {
                 "rgba(230, 126, 34, 0.8)",
                 "rgba(26, 188, 156, 0.8)",
                 "rgba(52, 73, 94, 0.8)",
-                "rgba(231, 76, 60, 0.8)"
+                "rgba(231, 76, 60, 0.8)",
+                "rgba(142, 68, 173, 0.8)",
+                "rgba(241, 196, 15, 0.8)",
+                "rgba(46, 204, 113, 0.8)"
             ],
             borderColor: [
                 "#072c3f", "#f55b5b", "#ffc847", "#43c16f", "#6ba3d1",
-                "#9b59b6", "#e67e22", "#1abc9c", "#34495e", "#e74c3c"
+                "#9b59b6", "#e67e22", "#1abc9c", "#34495e", "#e74c3c",
+                "#8e44ad", "#f1c40f", "#2ecc71"
             ],
             borderWidth: 2,
             borderRadius: 6
@@ -375,6 +385,7 @@ actualizarKPIs();
 
 function actualizarPaneles() {
     const alertText = document.getElementById("alertText");
+    const proveedorAlertText = document.getElementById("proveedorAlertText");
     const causaText = document.getElementById("causaText");
     const recomendacionText = document.getElementById("recomendacionText");
     const rankingList = document.getElementById("rankingList");
@@ -387,7 +398,7 @@ function actualizarPaneles() {
     const idxMax = desviaciones.indexOf(maxDesv);
     const etiquetasDesv = ["Mes actual", "Week 2", "Week 3"];
 
-    // ALERTA
+    // ALERTA FORECAST
     let mensajeAlerta = "";
     if (maxDesv > 15) {
         mensajeAlerta = `⚠️ Alerta crítica: La mayor desviación positiva es de ${maxDesv.toFixed(1)}% en ${etiquetasDesv[idxMax]}. El forecast está quedando corto frente a la demanda real. Esta situación requiere acción inmediata para evitar desabastecimiento y pérdida de operatividad en las rutas más críticas.`;
@@ -398,6 +409,47 @@ function actualizarPaneles() {
     } else {
         mensajeAlerta = `✅ Forecast bajo control: las desviaciones actuales son menores al 3%. El modelo de predicción está funcionando correctamente y se mantiene alineado con la demanda real del negocio.`;
     }
+
+    // ALERTA DE PROVEEDORES
+    const proveedoresConProblemas = [
+        {
+            nombre: "Repuestos del Sur Ltda.",
+            piezas: ["Compresor aire acondicionado", "Paquete de resoster", "Calibre de freno"],
+            problema: "sin stock",
+            impacto: "alto",
+            dias: 7
+        },
+        {
+            nombre: "TransDiesel Chile",
+            piezas: ["Motor completo Sprinter", "Caja de cambios"],
+            problema: "retraso en entrega",
+            impacto: "crítico",
+            dias: 4
+        },
+        {
+            nombre: "MaqParts S.A.",
+            piezas: ["Discos de freno", "Pastillas de freno"],
+            problema: "stock limitado",
+            impacto: "medio",
+            dias: 2
+        }
+    ];
+
+    const proveedorCritico = proveedoresConProblemas[0];
+    const piezasAfectadas = proveedorCritico.piezas.join(", ");
+    
+    let mensajeProveedor = `🚨 ALERTA CRÍTICA: El proveedor ${proveedorCritico.nombre} reporta estar ${proveedorCritico.problema} de piezas críticas incluyendo: ${piezasAfectadas}.\n\n`;
+    mensajeProveedor += `⏰ Tiempo estimado de reabastecimiento: ${proveedorCritico.dias} días hábiles.\n\n`;
+    mensajeProveedor += `📊 Impacto evaluado: ${proveedorCritico.impacto.toUpperCase()}. Esta situación puede afectar seriamente la operación de la flota si no se toman medidas inmediatas.\n\n`;
+    mensajeProveedor += `💡 Acción recomendada:\n`;
+    mensajeProveedor += `• Contactar proveedores alternativos inmediatamente\n`;
+    mensajeProveedor += `• Revisar stock disponible en bodega central\n`;
+    mensajeProveedor += `• Priorizar mantenimientos preventivos sobre correctivos\n`;
+    mensajeProveedor += `• Evaluar compra de emergencia con otro distribuidor\n\n`;
+    mensajeProveedor += `📞 Otros proveedores con alertas activas:\n`;
+    proveedoresConProblemas.slice(1).forEach(p => {
+        mensajeProveedor += `• ${p.nombre}: ${p.problema} (${p.piezas.length} piezas afectadas)\n`;
+    });
 
     // Causa probable
     const causas = [
@@ -464,6 +516,7 @@ function actualizarPaneles() {
     }
 
     causaText.textContent = causaSeleccionada;
+    proveedorAlertText.textContent = mensajeProveedor;
     recomendacionText.textContent = recomendacion;
     
     // Verificar altura del contenido y mostrar botones
@@ -480,6 +533,7 @@ actualizarPaneles();
 function verificarAlturaMensajes() {
     const contents = [
         { id: 'alertContent', btnId: 'alertShowMore' },
+        { id: 'proveedorAlertContent', btnId: 'proveedorAlertShowMore' },
         { id: 'causaContent', btnId: 'causaShowMore' },
         { id: 'recomendacionContent', btnId: 'recomendacionShowMore' },
         { id: 'rankingContent', btnId: 'rankingShowMore' }
@@ -501,7 +555,7 @@ function verificarAlturaMensajes() {
 }
 
 // Event listeners para botones "Mostrar más"
-['alert', 'causa', 'recomendacion', 'ranking'].forEach(prefix => {
+['alert', 'proveedorAlert', 'causa', 'recomendacion', 'ranking'].forEach(prefix => {
     const btn = document.getElementById(prefix + 'ShowMore');
     const content = document.getElementById(prefix + 'Content');
     
