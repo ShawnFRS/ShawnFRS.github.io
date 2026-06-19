@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TriajeNet · Pre-triage y asignación hospitalaria</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ============ HEADER / STEP NAV ============ -->
+  <header class="topbar">
+    <div class="topbar__brand">
+      <span class="topbar__pulse" aria-hidden="true">
+        <svg viewBox="0 0 48 24" width="34" height="17">
+          <polyline points="0,12 10,12 14,3 18,21 22,12 48,12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <div class="topbar__name">
+        <strong>TriajeNet</strong>
+        <span>Red asistencial Biobío</span>
+      </div>
+    </div>
+
+    <nav class="stepnav" aria-label="Progreso de atención">
+      <button class="stepnav__item is-active" data-step="1" data-target="screen-triage">
+        <span class="stepnav__num">01</span>
+        <span class="stepnav__label">Pre-triage</span>
+      </button>
+      <span class="stepnav__divider" aria-hidden="true"></span>
+      <button class="stepnav__item" data-step="2" data-target="screen-centros" disabled>
+        <span class="stepnav__num">02</span>
+        <span class="stepnav__label">Elegir centro</span>
+      </button>
+      <span class="stepnav__divider" aria-hidden="true"></span>
+      <button class="stepnav__item" data-step="3" data-target="screen-cola" disabled>
+        <span class="stepnav__num">03</span>
+        <span class="stepnav__label">Mi fila</span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- ============ SCREEN 1: PRE-TRIAGE ============ -->
+  <main id="screen-triage" class="screen is-visible">
+    <section class="hero">
+      <p class="hero__eyebrow">Antes de salir de casa</p>
+      <h1 class="hero__title">Cuéntanos qué te pasa.<br>Te decimos a dónde ir.</h1>
+      <p class="hero__sub">Este formulario clasifica tu urgencia con un protocolo simplificado tipo Manchester y te ayuda a elegir el centro asistencial con menos espera para tu nivel de prioridad.</p>
+    </section>
+
+    <form id="form-triage" class="card form-triage" novalidate>
+
+      <div class="form-section">
+        <h2 class="form-section__title"><span class="form-section__index">A</span>Identificación</h2>
+        <div class="grid grid--3">
+          <label class="field">
+            <span class="field__label">Nombre completo</span>
+            <input type="text" id="f-nombre" name="nombre" placeholder="Ej: Javiera Soto Rivas" required autocomplete="name">
+          </label>
+          <label class="field">
+            <span class="field__label">RUT o documento</span>
+            <input type="text" id="f-rut" name="rut" placeholder="12.345.678-9" required>
+          </label>
+          <label class="field">
+            <span class="field__label">Edad</span>
+            <input type="number" id="f-edad" name="edad" min="0" max="120" placeholder="Años" required>
+          </label>
+        </div>
+        <div class="grid grid--3">
+          <label class="field">
+            <span class="field__label">Sexo</span>
+            <select id="f-sexo" name="sexo" required>
+              <option value="" disabled selected>Selecciona</option>
+              <option value="femenino">Femenino</option>
+              <option value="masculino">Masculino</option>
+              <option value="otro">Otro / prefiero no decir</option>
+            </select>
+          </label>
+          <label class="field">
+            <span class="field__label">Peso (kg)</span>
+            <input type="number" id="f-peso" name="peso" min="0" max="400" step="0.1" placeholder="Ej: 68" required>
+          </label>
+          <label class="field">
+            <span class="field__label">Estatura (cm)</span>
+            <input type="number" id="f-estatura" name="estatura" min="30" max="250" placeholder="Ej: 170" required>
+          </label>
+        </div>
+        <div class="grid grid--2">
+          <label class="field">
+            <span class="field__label">Teléfono de contacto</span>
+            <input type="tel" id="f-telefono" name="telefono" placeholder="+56 9 1234 5678" required>
+          </label>
+          <label class="field">
+            <span class="field__label">Contacto de emergencia</span>
+            <input type="text" id="f-contacto-emergencia" name="contactoEmergencia" placeholder="Nombre y teléfono">
+          </label>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2 class="form-section__title"><span class="form-section__index">B</span>Motivo de consulta</h2>
+        <label class="field">
+          <span class="field__label">¿Qué síntomas tienes? Describe con tus palabras</span>
+          <textarea id="f-sintomas" name="sintomas" rows="3" placeholder="Ej: dolor fuerte en el pecho desde hace 1 hora, me cuesta respirar" required></textarea>
+        </label>
+        <label class="field">
+          <span class="field__label">¿Por qué consideras esto urgente?</span>
+          <textarea id="f-razon-urgencia" name="razonUrgencia" rows="2" placeholder="Ej: el dolor no cede con reposo y se irradia al brazo"></textarea>
+        </label>
+
+        <div class="grid grid--2">
+          <fieldset class="field field--checks">
+            <span class="field__label">Marca si presentas alguno de estos signos</span>
+            <div class="checks">
+              <label class="check"><input type="checkbox" name="signoAlarma" value="dolor_pecho"><span>Dolor u opresión en el pecho</span></label>
+              <label class="check"><input type="checkbox" name="signoAlarma" value="dificultad_respirar"><span>Dificultad para respirar</span></label>
+              <label class="check"><input type="checkbox" name="signoAlarma" value="sangrado_severo"><span>Sangrado abundante / no se detiene</span></label>
+              <label class="check"><input type="checkbox" name="signoAlarma" value="perdida_conciencia"><span>Pérdida o alteración de conciencia</span></label>
+              <label class="check"><input type="checkbox" name="signoAlarma" value="confusion"><span>Confusión o desorientación repentina</span></label>
+              <label class="check"><input type="checkbox" name="signoAlarma" value="convulsion"><span>Convulsiones</span></label>
+              <label class="check"><input type="checkbox" name="signoAlarma" value="trauma_severo"><span>Trauma o golpe severo / fractura visible</span></label>
+              <label class="check"><input type="checkbox" name="signoAlarma" value="embarazo_riesgo"><span>Embarazo con signos de riesgo</span></label>
+            </div>
+          </fieldset>
+
+          <div class="field-stack">
+            <label class="field">
+              <span class="field__label">Nivel de dolor (0 sin dolor — 10 insoportable)</span>
+              <div class="range-row">
+                <input type="range" id="f-dolor" name="dolor" min="0" max="10" value="0">
+                <output id="f-dolor-out" class="range-out">0</output>
+              </div>
+            </label>
+            <label class="field">
+              <span class="field__label">¿Hace cuánto comenzó?</span>
+              <select id="f-inicio" name="inicioSintomas">
+                <option value="menos1h">Hace menos de 1 hora</option>
+                <option value="1a6h">Entre 1 y 6 horas</option>
+                <option value="6a24h">Entre 6 y 24 horas</option>
+                <option value="mas24h">Más de 24 horas</option>
+              </select>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2 class="form-section__title"><span class="form-section__index">C</span>Signos vitales <span class="form-section__hint">(si los conoces; si no, déjalo en blanco)</span></h2>
+        <div class="grid grid--4">
+          <label class="field">
+            <span class="field__label">Frec. cardíaca (lpm)</span>
+            <input type="number" id="f-fc" name="frecCardiaca" min="20" max="250" placeholder="Ej: 78">
+          </label>
+          <label class="field">
+            <span class="field__label">Presión sistólica</span>
+            <input type="number" id="f-pas" name="presionSistolica" min="40" max="260" placeholder="Ej: 120">
+          </label>
+          <label class="field">
+            <span class="field__label">Saturación O₂ (%)</span>
+            <input type="number" id="f-sato2" name="saturacionO2" min="40" max="100" placeholder="Ej: 98">
+          </label>
+          <label class="field">
+            <span class="field__label">Temperatura (°C)</span>
+            <input type="number" id="f-temp" name="temperatura" min="30" max="43" step="0.1" placeholder="Ej: 36.8">
+          </label>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2 class="form-section__title"><span class="form-section__index">D</span>Antecedentes relevantes</h2>
+        <div class="grid grid--2">
+          <label class="field">
+            <span class="field__label">Alergias conocidas</span>
+            <input type="text" id="f-alergias" name="alergias" placeholder="Ej: penicilina, ninguna conocida">
+          </label>
+          <label class="field">
+            <span class="field__label">Enfermedades preexistentes / medicamentos</span>
+            <input type="text" id="f-antecedentes" name="antecedentes" placeholder="Ej: hipertenso, toma losartán">
+          </label>
+        </div>
+      </div>
+
+      <div class="form-foot">
+        <p class="form-foot__note">Si tu situación es de riesgo vital inmediato, no esperes este resultado: llama al <strong>131 (SAMU)</strong> o acude directo a urgencias.</p>
+        <button type="submit" class="btn btn--primary btn--lg">Calcular mi nivel de prioridad</button>
+      </div>
+    </form>
+
+    <!-- RESULT PANEL -->
+    <section id="triage-result" class="result-panel" hidden>
+      <div class="result-panel__badge" id="result-badge">
+        <span class="result-panel__ring" aria-hidden="true"></span>
+        <div class="result-panel__badge-text">
+          <span class="result-panel__cat" id="result-cat">—</span>
+          <span class="result-panel__time" id="result-time">—</span>
+        </div>
+      </div>
+      <div class="result-panel__body">
+        <h3 id="result-title">—</h3>
+        <p id="result-desc">—</p>
+        <ul class="result-panel__factors" id="result-factors"></ul>
+        <button type="button" class="btn btn--primary" id="btn-go-centros">Ver centros asistenciales disponibles →</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ SCREEN 2: CENTROS ============ -->
+  <main id="screen-centros" class="screen">
+    <section class="hero hero--compact">
+      <p class="hero__eyebrow">Paso 2</p>
+      <h1 class="hero__title">Elige tu centro asistencial</h1>
+      <p class="hero__sub">Ordenado según tu prioridad <span id="centros-prioridad-chip" class="chip chip--inline">—</span>. Comparamos distancia, espera estimada y saturación actual de cada recinto.</p>
+    </section>
+
+    <div class="centros-controls card">
+      <div class="field field--inline">
+        <span class="field__label">Ordenar por</span>
+        <select id="sort-centros">
+          <option value="recomendado">Recomendado para tu caso</option>
+          <option value="espera">Menor tiempo de espera</option>
+          <option value="distancia">Menor distancia</option>
+        </select>
+      </div>
+      <div class="field field--inline">
+        <span class="field__label">Tipo de centro</span>
+        <select id="filter-tipo">
+          <option value="todos">Todos</option>
+          <option value="hospital">Hospitales</option>
+          <option value="sapu">SAPU / urgencia primaria</option>
+          <option value="clinica">Clínicas privadas</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="centros-list" class="centros-list"></div>
+  </main>
+
+  <!-- ============ SCREEN 3: COLA ============ -->
+  <main id="screen-cola" class="screen">
+    <section class="hero hero--compact">
+      <p class="hero__eyebrow">Paso 3</p>
+      <h1 class="hero__title">Tu lugar en la fila</h1>
+      <p class="hero__sub">Esta vista se actualiza sola. Si cierras la página, vuelve a entrar y seguirás viendo tu misma posición.</p>
+    </section>
+
+    <div class="cola-grid">
+      <section class="card cola-monitor">
+        <div class="cola-monitor__ring-wrap">
+          <svg class="cola-monitor__ring" viewBox="0 0 200 200" width="200" height="200" aria-hidden="true">
+            <circle class="cola-monitor__ring-bg" cx="100" cy="100" r="86"/>
+            <circle class="cola-monitor__ring-fg" id="ring-fg" cx="100" cy="100" r="86"/>
+          </svg>
+          <div class="cola-monitor__center">
+            <span class="cola-monitor__number" id="cola-personas-antes">0</span>
+            <span class="cola-monitor__label">personas antes que tú</span>
+          </div>
+        </div>
+        <div class="cola-monitor__meta">
+          <div class="cola-meta-item">
+            <span class="cola-meta-item__label">Tiempo estimado restante</span>
+            <span class="cola-meta-item__value" id="cola-tiempo-restante">—</span>
+          </div>
+          <div class="cola-meta-item">
+            <span class="cola-meta-item__label">Tu categoría de triage</span>
+            <span class="cola-meta-item__value" id="cola-categoria">—</span>
+          </div>
+          <div class="cola-meta-item">
+            <span class="cola-meta-item__label">Centro asignado</span>
+            <span class="cola-meta-item__value" id="cola-centro">—</span>
+          </div>
+          <div class="cola-meta-item">
+            <span class="cola-meta-item__label">N° de orden</span>
+            <span class="cola-meta-item__value" id="cola-numero">—</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card cola-info">
+        <h3>¿Por qué este orden?</h3>
+        <p>La fila no avanza solo por orden de llegada: dentro de un mismo centro, primero se atiende por nivel de urgencia y luego por hora de llegada. Por eso tu posición puede adelantarse si llega alguien con menor urgencia, o esperar más si llega alguien más grave que tú.</p>
+        <ul class="legend">
+          <li><span class="legend__dot legend__dot--rojo"></span>Resucitación — atención inmediata</li>
+          <li><span class="legend__dot legend__dot--naranja"></span>Emergencia — hasta 10 min</li>
+          <li><span class="legend__dot legend__dot--amarillo"></span>Urgencia — hasta 60 min</li>
+          <li><span class="legend__dot legend__dot--verde"></span>Menos urgente — hasta 120 min</li>
+        </ul>
+        <button type="button" class="btn btn--ghost" id="btn-salir-fila">Salir de la fila</button>
+      </section>
+    </div>
+
+    <section class="card cola-timeline">
+      <h3>Línea de tiempo de tu atención</h3>
+      <ol class="timeline" id="timeline-list"></ol>
+    </section>
+  </main>
+
+  <footer class="appfoot">
+    <p>TriajeNet es una herramienta de orientación y no reemplaza la evaluación de un profesional de salud. Ante una emergencia vital, llama al 131 o al 133.</p>
+  </footer>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
