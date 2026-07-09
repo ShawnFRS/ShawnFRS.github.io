@@ -43,6 +43,15 @@
         <span class="stepnav__label">Mi fila</span>
       </button>
     </nav>
+
+    <button type="button" class="admin-entry" id="btn-open-admin">
+      <svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true">
+        <rect x="2" y="10" width="3.4" height="8" rx="1" fill="currentColor"/>
+        <rect x="8.3" y="5" width="3.4" height="13" rx="1" fill="currentColor"/>
+        <rect x="14.6" y="1.5" width="3.4" height="16.5" rx="1" fill="currentColor"/>
+      </svg>
+      Panel administrador
+    </button>
   </header>
 
   <!-- ============ SCREEN 1: PRE-TRIAGE ============ -->
@@ -297,6 +306,99 @@
       <h3>Línea de tiempo de tu atención</h3>
       <ol class="timeline" id="timeline-list"></ol>
     </section>
+  </main>
+
+  <!-- ============ SCREEN 4: PANEL ADMINISTRADOR (HOSPITAL) ============ -->
+  <main id="screen-admin" class="screen screen--admin">
+
+    <section class="admin-topline">
+      <button type="button" class="admin-back" id="btn-close-admin">
+        ← Volver a vista paciente
+      </button>
+      <span class="chip chip--live"><span class="admin-live-dot" aria-hidden="true"></span>Datos en vivo · se simulan cada 6 s</span>
+    </section>
+
+    <section class="admin-hero">
+      <div>
+        <p class="hero__eyebrow">Panel de gestión hospitalaria</p>
+        <h1 class="hero__title">Hospital Guillermo Grant Benavente</h1>
+        <p class="hero__sub">Vista operativa del servicio de urgencia: demanda actual, tiempos de espera y recursos disponibles, para apoyar decisiones de priorización en box.</p>
+      </div>
+      <div class="admin-hero__clock">
+        <span class="admin-hero__clock-label">Última actualización</span>
+        <span class="admin-hero__clock-value" id="admin-updated">—</span>
+      </div>
+    </section>
+
+    <section class="admin-kpis" id="admin-kpis" aria-label="Indicadores clave"></section>
+
+    <section class="admin-grid">
+      <article class="card admin-panel">
+        <div class="admin-panel__head">
+          <h3>Cola actual por categoría de triage</h3>
+          <span class="admin-panel__hint">Total en espera, por nivel de urgencia</span>
+        </div>
+        <div id="chart-categorias" class="admin-chart"></div>
+      </article>
+
+      <article class="card admin-panel admin-panel--alertas">
+        <div class="admin-panel__head">
+          <h3>Alertas de tiempo de espera</h3>
+          <span class="admin-panel__hint">Pacientes que superaron el máximo de su categoría</span>
+        </div>
+        <ul class="admin-alertas" id="admin-alertas"></ul>
+      </article>
+    </section>
+
+    <section class="card admin-panel">
+      <div class="admin-panel__head">
+        <h3>Espera promedio por hora — jornada de hoy</h3>
+        <span class="admin-panel__hint">Minutos promedio de espera antes de box</span>
+      </div>
+      <div id="chart-tendencia" class="admin-chart"></div>
+    </section>
+
+    <section class="card admin-panel">
+      <div class="admin-panel__head">
+        <h3>Recursos y personal en turno</h3>
+        <span class="admin-panel__hint">Capacidad disponible para absorber la demanda actual</span>
+      </div>
+      <div class="admin-recursos" id="admin-recursos"></div>
+    </section>
+
+    <section class="card admin-panel">
+      <div class="admin-panel__head">
+        <h3>Fila de pacientes</h3>
+        <div class="field field--inline">
+          <span class="field__label">Filtrar por categoría</span>
+          <select id="admin-filtro-categoria">
+            <option value="todas">Todas</option>
+            <option value="rojo">Resucitación</option>
+            <option value="naranja">Emergencia</option>
+            <option value="amarillo">Urgencia</option>
+            <option value="verde">Urgencia menor</option>
+            <option value="azul">No urgente</option>
+          </select>
+        </div>
+      </div>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>N°</th>
+              <th>Paciente</th>
+              <th>Categoría</th>
+              <th>Llegada</th>
+              <th>Espera actual</th>
+              <th>Box asignado</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="admin-table-body"></tbody>
+        </table>
+      </div>
+    </section>
+
   </main>
 
   <footer class="appfoot">

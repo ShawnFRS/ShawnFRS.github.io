@@ -345,6 +345,8 @@
       if (estado.centroId === centro.id) card.classList.add("is-selected");
 
       const esperaClass = centro.esperaMin <= 15 ? "is-good" : centro.esperaMin <= 50 ? "is-warn" : "is-bad";
+      const satPct = Math.round(centro.saturacion * 100);
+      const satClass = centro.saturacion >= 0.75 ? "is-bad" : centro.saturacion >= 0.55 ? "is-warn" : "";
 
       card.innerHTML = `
         <span class="centro-card__rank">${String(idx + 1).padStart(2, "0")}</span>
@@ -361,6 +363,10 @@
         <div class="centro-card__stat">
           <span class="centro-card__stat-label">Espera estimada</span>
           <span class="centro-card__stat-value ${esperaClass}">${centro.esperaMin} min</span>
+          <span class="centro-card__satbar" title="Ocupación actual del centro">
+            <span class="centro-card__satbar-track"><span class="centro-card__satbar-fill ${satClass}" style="width:${satPct}%"></span></span>
+            <span class="centro-card__satbar-pct">${satPct}%</span>
+          </span>
         </div>
         <div class="centro-card__cta">
           <button type="button" class="btn ${estado.centroId === centro.id ? "btn--ghost" : "btn--primary"}" data-centro="${centro.id}">
@@ -510,7 +516,305 @@
   }
 
   /* ----------------------------------------------------------
-     8. INICIALIZACIÓN
+     8. PANEL ADMINISTRADOR (vista hospital / gestión de cola)
+     ---------------------------------------------------------- */
+  const SLA_MIN = { rojo: 0, naranja: 10, amarillo: 60, verde: 120, azul: null };
+  const COLOR_VAR = { rojo: "var(--rojo)", naranja: "var(--naranja)", amarillo: "var(--amarillo)", verde: "var(--verde)", azul: "var(--azul)" };
+
+  const ADMIN = {
+    centro: "Hospital Guillermo Grant Benavente",
+    atendidosHoy: 142,
+    boxesTotales: 8,
+    camillasTotales: 10,
+    camillasOcupadas: 7,
+    enfermerasTurno: 5,
+    enfermerasRecomendadas: 6,
+    medicosTurno: 4,
+    medicosRecomendados: 4,
+    tendenciaHoras: [
+      { hora: "08:00", min: 18 }, { hora: "09:00", min: 24 }, { hora: "10:00", min: 31 },
+      { hora: "11:00", min: 39 }, { hora: "12:00", min: 52 }, { hora: "13:00", min: 61 },
+      { hora: "14:00", min: 58 }, { hora: "15:00", min: 65 }, { hora: "16:00", min: 70 },
+      { hora: "17:00", min: 64 }, { hora: "18:00", min: 57 },
+    ],
+    pacientes: [
+      { id: 1,  nombre: "Rodrigo Iturra",     edad: 58, categoria: "rojo",     estado: "en_box",    box: "Reanimación 1", llegadaHaceMin: 2 },
+      { id: 2,  nombre: "Marcela Sepúlveda",   edad: 66, categoria: "naranja",  estado: "en_box",    box: "Box 2",  llegadaHaceMin: 6 },
+      { id: 3,  nombre: "Benjamín Toro",       edad: 34, categoria: "naranja",  estado: "en_box",    box: "Box 5",  llegadaHaceMin: 3 },
+      { id: 4,  nombre: "Antonia Reyes",       edad: 29, categoria: "naranja",  estado: "esperando", box: null,     llegadaHaceMin: 14 },
+      { id: 5,  nombre: "Carlos Huenchullán",  edad: 71, categoria: "amarillo", estado: "en_box",    box: "Box 1",  llegadaHaceMin: 20 },
+      { id: 6,  nombre: "Javiera Molina",      edad: 45, categoria: "amarillo", estado: "en_box",    box: "Box 4",  llegadaHaceMin: 35 },
+      { id: 7,  nombre: "Francisco Bravo",     edad: 8,  categoria: "amarillo", estado: "esperando", box: null,     llegadaHaceMin: 8 },
+      { id: 8,  nombre: "Camila Ortiz",        edad: 52, categoria: "amarillo", estado: "esperando", box: null,     llegadaHaceMin: 22 },
+      { id: 9,  nombre: "Sebastián Paillao",   edad: 63, categoria: "amarillo", estado: "esperando", box: null,     llegadaHaceMin: 41 },
+      { id: 10, nombre: "Valentina Muñoz",     edad: 19, categoria: "amarillo", estado: "esperando", box: null,     llegadaHaceMin: 55 },
+      { id: 11, nombre: "Pedro Contreras",     edad: 77, categoria: "amarillo", estado: "esperando", box: null,     llegadaHaceMin: 68 },
+      { id: 12, nombre: "Isidora Vergara",     edad: 33, categoria: "amarillo", estado: "esperando", box: null,     llegadaHaceMin: 12 },
+      { id: 13, nombre: "Matías Cid",          edad: 40, categoria: "amarillo", estado: "esperando", box: null,     llegadaHaceMin: 30 },
+      { id: 14, nombre: "Rosa Elvira Salinas", edad: 82, categoria: "verde",    estado: "en_box",    box: "Box 3",  llegadaHaceMin: 50 },
+      { id: 15, nombre: "Ignacio Sandoval",    edad: 27, categoria: "verde",    estado: "esperando", box: null,     llegadaHaceMin: 25 },
+      { id: 16, nombre: "Fernanda Mardones",   edad: 55, categoria: "verde",    estado: "esperando", box: null,     llegadaHaceMin: 60 },
+      { id: 17, nombre: "Diego Villalobos",    edad: 15, categoria: "verde",    estado: "esperando", box: null,     llegadaHaceMin: 88 },
+      { id: 18, nombre: "Catalina Fuentes",    edad: 48, categoria: "verde",    estado: "esperando", box: null,     llegadaHaceMin: 105 },
+      { id: 19, nombre: "Tomás Aguayo",        edad: 90, categoria: "verde",    estado: "esperando", box: null,     llegadaHaceMin: 128 },
+      { id: 20, nombre: "Josefina Riquelme",   edad: 36, categoria: "verde",    estado: "esperando", box: null,     llegadaHaceMin: 40 },
+      { id: 21, nombre: "Álvaro Concha",       edad: 61, categoria: "verde",    estado: "esperando", box: null,     llegadaHaceMin: 70 },
+      { id: 22, nombre: "Daniela Yáñez",       edad: 24, categoria: "azul",     estado: "esperando", box: null,     llegadaHaceMin: 45 },
+      { id: 23, nombre: "Nicolás Barría",      edad: 5,  categoria: "azul",     estado: "esperando", box: null,     llegadaHaceMin: 90 },
+      { id: 24, nombre: "Constanza Painemal",  edad: 69, categoria: "azul",     estado: "esperando", box: null,     llegadaHaceMin: 150 },
+    ],
+  };
+  ADMIN.pacientes.forEach((p) => { p.horaLlegada = Date.now() - p.llegadaHaceMin * 60000; });
+
+  const screenAdmin = document.getElementById("screen-admin");
+  const adminFiltro = document.getElementById("admin-filtro-categoria");
+  let adminTickerId = null;
+
+  function minutosDeEspera(p) { return Math.round((Date.now() - p.horaLlegada) / 60000); }
+
+  function esAlerta(p) {
+    if (p.estado !== "esperando") return false;
+    const sla = SLA_MIN[p.categoria];
+    if (sla === null || sla === undefined) return false;
+    return minutosDeEspera(p) > sla;
+  }
+
+  function boxLibre() {
+    const usados = new Set(ADMIN.pacientes.filter((p) => p.estado === "en_box").map((p) => p.box));
+    for (let i = 1; i <= ADMIN.boxesTotales; i++) {
+      const nombreBox = `Box ${i}`;
+      if (!usados.has(nombreBox)) return nombreBox;
+    }
+    return null;
+  }
+
+  function llamarPaciente(id) {
+    const p = ADMIN.pacientes.find((x) => x.id === id);
+    if (!p) return;
+    const box = boxLibre();
+    if (!box) { alert("No hay boxes disponibles en este momento. Libera un box antes de llamar a un nuevo paciente."); return; }
+    p.estado = "en_box";
+    p.box = box;
+    renderAdmin();
+  }
+
+  function finalizarAtencion(id) {
+    const idx = ADMIN.pacientes.findIndex((x) => x.id === id);
+    if (idx === -1) return;
+    ADMIN.pacientes.splice(idx, 1);
+    ADMIN.atendidosHoy += 1;
+    renderAdmin();
+  }
+
+  function renderAdminKPIs() {
+    const enEspera = ADMIN.pacientes.filter((p) => p.estado === "esperando");
+    const esperaProm = enEspera.length
+      ? Math.round(enEspera.reduce((acc, p) => acc + minutosDeEspera(p), 0) / enEspera.length)
+      : 0;
+    const enBox = ADMIN.pacientes.filter((p) => p.estado === "en_box").length;
+    const saturacion = enBox / ADMIN.boxesTotales;
+    const alertas = ADMIN.pacientes.filter(esAlerta).length;
+
+    const kpis = [
+      { label: "Pacientes en espera", value: enEspera.length, meta: `${ADMIN.pacientes.length} en el sistema ahora`, cls: enEspera.length > 14 ? "is-warn" : "" },
+      { label: "Atendidos hoy", value: ADMIN.atendidosHoy, meta: ADMIN.centro, cls: "" },
+      { label: "Espera promedio", value: `${esperaProm} min`, meta: "Meta interna: 45 min", cls: esperaProm > 45 ? "is-warn" : "" },
+      { label: "Ocupación de boxes", value: `${Math.round(saturacion * 100)}%`, meta: `${enBox} de ${ADMIN.boxesTotales} boxes ocupados`, cls: saturacion >= 0.9 ? "is-critical" : saturacion >= 0.75 ? "is-warn" : "" },
+      { label: "Alertas activas", value: alertas, meta: alertas ? "Superaron su tiempo máximo" : "Todo dentro de meta", cls: alertas ? "is-critical" : "" },
+    ];
+
+    document.getElementById("admin-kpis").innerHTML = kpis.map((k) => `
+      <div class="kpi-card ${k.cls}">
+        <span class="kpi-card__label">${k.label}</span>
+        <span class="kpi-card__value">${k.value}</span>
+        <span class="kpi-card__meta">${k.meta}</span>
+      </div>
+    `).join("");
+  }
+
+  function renderAdminCategorias() {
+    const conteo = {};
+    ORDEN_CATS.forEach((c) => { conteo[c] = 0; });
+    ADMIN.pacientes.forEach((p) => { conteo[p.categoria] += 1; });
+    const max = Math.max(1, ...Object.values(conteo));
+
+    document.getElementById("chart-categorias").innerHTML = `<div class="admin-barchart">${ORDEN_CATS.map((c) => `
+      <div class="admin-barchart__row">
+        <span class="admin-barchart__label"><span class="dot" style="background:${COLOR_VAR[c]}"></span>${CATEGORIAS[c].nombre}</span>
+        <div class="admin-barchart__track"><div class="admin-barchart__fill" style="width:${(conteo[c] / max) * 100}%; background:${COLOR_VAR[c]}"></div></div>
+        <span class="admin-barchart__count">${conteo[c]}</span>
+      </div>
+    `).join("")}</div>`;
+  }
+
+  function renderAdminTendencia() {
+    const datos = ADMIN.tendenciaHoras;
+    const W = 720, H = 220, PAD_L = 34, PAD_B = 26, PAD_T = 14, PAD_R = 10;
+    const innerW = W - PAD_L - PAD_R, innerH = H - PAD_T - PAD_B;
+    const maxMin = Math.max(...datos.map((d) => d.min)) * 1.15;
+
+    const puntos = datos.map((d, i) => ({
+      x: PAD_L + (i / (datos.length - 1)) * innerW,
+      y: PAD_T + innerH - (d.min / maxMin) * innerH,
+      ...d,
+    }));
+
+    const linePath = puntos.map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
+    const baseY = (PAD_T + innerH).toFixed(1);
+    const areaPath = `${linePath} L${puntos[puntos.length - 1].x.toFixed(1)},${baseY} L${puntos[0].x.toFixed(1)},${baseY} Z`;
+
+    const gridLines = [0, 0.5, 1].map((t) => {
+      const y = PAD_T + innerH * (1 - t);
+      const val = Math.round(maxMin * t);
+      return `<line x1="${PAD_L}" y1="${y.toFixed(1)}" x2="${W - PAD_R}" y2="${y.toFixed(1)}" style="stroke:var(--ink-100); stroke-width:1"/>
+              <text x="${PAD_L - 8}" y="${(y + 4).toFixed(1)}" text-anchor="end" style="font-family:var(--font-mono); font-size:10.5px; fill:var(--ink-500)">${val}</text>`;
+    }).join("");
+
+    const etiquetasEjeX = puntos.filter((_, i) => i % 2 === 0).map((p) => `
+      <text x="${p.x.toFixed(1)}" y="${H - 6}" text-anchor="middle" style="font-family:var(--font-mono); font-size:10.5px; fill:var(--ink-500)">${p.hora}</text>
+    `).join("");
+
+    const dots = puntos.map((p) => `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="3.4" style="fill:var(--teal-600); stroke:var(--card); stroke-width:1.5"/>`).join("");
+
+    document.getElementById("chart-tendencia").innerHTML = `
+      <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Tendencia de espera promedio por hora">
+        <defs>
+          <linearGradient id="tendGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" style="stop-color:var(--teal-500); stop-opacity:0.28"/>
+            <stop offset="100%" style="stop-color:var(--teal-500); stop-opacity:0"/>
+          </linearGradient>
+        </defs>
+        ${gridLines}
+        <path d="${areaPath}" style="fill:url(#tendGradient); stroke:none"/>
+        <path d="${linePath}" style="fill:none; stroke:var(--teal-600); stroke-width:2.4; stroke-linejoin:round; stroke-linecap:round"/>
+        ${dots}
+        ${etiquetasEjeX}
+      </svg>
+    `;
+  }
+
+  function renderAdminAlertas() {
+    const alertas = ADMIN.pacientes.filter(esAlerta).sort((a, b) => minutosDeEspera(b) - minutosDeEspera(a));
+    const cont = document.getElementById("admin-alertas");
+
+    if (!alertas.length) {
+      cont.innerHTML = `<li class="admin-alertas__empty">No hay pacientes fuera de su tiempo máximo de espera en este momento.</li>`;
+      return;
+    }
+
+    cont.innerHTML = alertas.map((p) => {
+      const severa = p.categoria === "rojo" || p.categoria === "naranja";
+      return `
+        <li class="admin-alerta ${severa ? "" : "admin-alerta--naranja"}">
+          <span class="admin-alerta__dot"></span>
+          <div class="admin-alerta__body">
+            <span class="admin-alerta__name">${p.nombre} · ${CATEGORIAS[p.categoria].nombre}</span>
+            <span class="admin-alerta__detail">Espera ${minutosDeEspera(p)} min — máximo para su categoría: ${SLA_MIN[p.categoria]} min</span>
+          </div>
+        </li>
+      `;
+    }).join("");
+  }
+
+  function renderAdminRecursos() {
+    const enBox = ADMIN.pacientes.filter((p) => p.estado === "en_box").length;
+    const items = [
+      { label: "Boxes de atención", num: enBox, den: ADMIN.boxesTotales, cls: enBox / ADMIN.boxesTotales >= 0.9 ? "is-bad" : enBox / ADMIN.boxesTotales >= 0.75 ? "is-warn" : "" },
+      { label: "Camillas de espera ocupadas", num: ADMIN.camillasOcupadas, den: ADMIN.camillasTotales, cls: ADMIN.camillasOcupadas / ADMIN.camillasTotales >= 0.9 ? "is-bad" : "" },
+      { label: "Enfermería en turno", num: ADMIN.enfermerasTurno, den: ADMIN.enfermerasRecomendadas, cls: ADMIN.enfermerasTurno < ADMIN.enfermerasRecomendadas ? "is-warn" : "" },
+      { label: "Personal médico en turno", num: ADMIN.medicosTurno, den: ADMIN.medicosRecomendados, cls: ADMIN.medicosTurno < ADMIN.medicosRecomendados ? "is-warn" : "" },
+    ];
+    document.getElementById("admin-recursos").innerHTML = items.map((it) => `
+      <div class="admin-recurso">
+        <span class="admin-recurso__label">${it.label}</span>
+        <div class="admin-recurso__row"><span class="admin-recurso__num">${it.num}</span><span class="admin-recurso__den">/ ${it.den}</span></div>
+        <div class="admin-recurso__bar"><div class="admin-recurso__bar-fill ${it.cls}" style="width:${Math.min(100, (it.num / it.den) * 100)}%"></div></div>
+      </div>
+    `).join("");
+  }
+
+  function renderAdminTabla() {
+    const filtro = adminFiltro.value;
+    let lista = [...ADMIN.pacientes].sort((a, b) => {
+      const catDiff = ORDEN_CATS.indexOf(a.categoria) - ORDEN_CATS.indexOf(b.categoria);
+      if (catDiff !== 0) return catDiff;
+      return minutosDeEspera(b) - minutosDeEspera(a);
+    });
+    if (filtro !== "todas") lista = lista.filter((p) => p.categoria === filtro);
+
+    const tbody = document.getElementById("admin-table-body");
+    tbody.innerHTML = lista.map((p, idx) => {
+      const alerta = esAlerta(p);
+      const espera = p.estado === "en_box" ? "En box" : `${minutosDeEspera(p)} min`;
+      const accion = p.estado === "esperando"
+        ? `<button type="button" class="btn btn--primary" data-accion="llamar" data-id="${p.id}">Llamar a box</button>`
+        : `<button type="button" class="btn btn--ghost" data-accion="finalizar" data-id="${p.id}">Finalizar atención</button>`;
+      return `
+        <tr class="${alerta ? "is-alerta" : ""}">
+          <td>${idx + 1}</td>
+          <td>${p.nombre} <span style="color:var(--ink-500)">· ${p.edad} años</span></td>
+          <td><span class="admin-cat-pill admin-cat-pill--${p.categoria}"><span class="dot"></span>${CATEGORIAS[p.categoria].nombre}</span></td>
+          <td>${new Date(p.horaLlegada).toLocaleTimeString("es-CL", { hour: "2-digit", minute: "2-digit" })}</td>
+          <td class="${alerta ? "espera-alerta" : ""}">${espera}</td>
+          <td>${p.box || "—"}</td>
+          <td>${accion}</td>
+        </tr>
+      `;
+    }).join("");
+
+    tbody.querySelectorAll("[data-accion]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const id = Number(btn.dataset.id);
+        if (btn.dataset.accion === "llamar") llamarPaciente(id);
+        else finalizarAtencion(id);
+      });
+    });
+  }
+
+  function renderAdmin() {
+    document.getElementById("admin-updated").textContent =
+      new Date().toLocaleTimeString("es-CL", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    renderAdminKPIs();
+    renderAdminCategorias();
+    renderAdminTendencia();
+    renderAdminAlertas();
+    renderAdminRecursos();
+    renderAdminTabla();
+  }
+
+  adminFiltro.addEventListener("change", renderAdminTabla);
+
+  function iniciarTickerAdmin() {
+    if (adminTickerId) clearInterval(adminTickerId);
+    adminTickerId = setInterval(() => {
+      if (Math.random() < 0.3) ADMIN.atendidosHoy += 1;
+      renderAdmin();
+    }, 6000);
+  }
+  function detenerTickerAdmin() {
+    if (adminTickerId) clearInterval(adminTickerId);
+    adminTickerId = null;
+  }
+
+  document.getElementById("btn-open-admin").addEventListener("click", () => {
+    document.body.classList.add("is-admin-mode");
+    Object.values(screens).forEach((el) => el.classList.remove("is-visible"));
+    screenAdmin.classList.add("is-visible");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    renderAdmin();
+    iniciarTickerAdmin();
+  });
+
+  document.getElementById("btn-close-admin").addEventListener("click", () => {
+    document.body.classList.remove("is-admin-mode");
+    screenAdmin.classList.remove("is-visible");
+    detenerTickerAdmin();
+    const activo = document.querySelector(".stepnav__item.is-active");
+    irAPaso(activo ? Number(activo.dataset.step) : 1);
+  });
+
+  /* ----------------------------------------------------------
+     9. INICIALIZACIÓN
      ---------------------------------------------------------- */
   renderCentros();
 })();
